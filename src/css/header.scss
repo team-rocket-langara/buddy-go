@@ -1,4 +1,19 @@
 .header{
     background-color: $primary;
     text-align: center;
+
+    .q-toolbar{
+        display: flex;
+        align-items: center;
+    }
+
+    .q-toolbar__title{
+        display: flex;
+        justify-content: center;
+    }
+
+    img{
+        width: 30%;
+        margin-left: 3rem;
+    }
 }

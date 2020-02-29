@@ -4,7 +4,7 @@
     <q-header bordered class="header">
       <q-toolbar>
         <q-toolbar-title>
-          <img src="../assets/buddy-logo.jpg">
+          <img src="../assets/logo-neg-hor.svg">
         </q-toolbar-title>
 
         <q-btn dense flat round icon="menu" @click="right = !right" />

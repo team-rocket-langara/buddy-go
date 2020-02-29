@@ -43,5 +43,15 @@
     &-btns{
         background: $lightBg;
         padding: .5rem;
+
+        .btn{
+
+            &-like{
+
+                img{
+                    width: 20px;
+                }
+            }
+        }
     }
 }
