@@ -1,94 +1,81 @@
 <template>
   <q-page>
-    <div class="feed-item">
-      <header>
-          <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
-          <div class="feed-item-info">
-              <h1>Lorem.</h1>
-              <p>0.8km</p>
-          </div>
-      </header>
-      <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-      <div class="feed-item-btns">
-          <span>btn1</span>
-          <span>btn2</span>
-          <span>btn3</span>
-      </div>
+      <div class="feed-item">
+        <header>
+            <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
+            <div class="feed-item-info">
+                <h1>Lorem.</h1>
+                <p>0.8km</p>
+            </div>
+        </header>
+        <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
     <div class="feed-item">
         <header>
             <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
             <div class="feed-item-info">
-                <h1>Voluptas.</h1>
+                <h1>Hic?</h1>
                 <p>0.8km</p>
             </div>
         </header>
         <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
     <div class="feed-item">
         <header>
             <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
             <div class="feed-item-info">
-                <h1>Asperiores?</h1>
+                <h1>Ea.</h1>
                 <p>0.8km</p>
             </div>
         </header>
         <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
     <div class="feed-item">
         <header>
             <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
             <div class="feed-item-info">
-                <h1>Vel.</h1>
+                <h1>Inventore.</h1>
                 <p>0.8km</p>
             </div>
         </header>
         <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
     <div class="feed-item">
         <header>
             <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
             <div class="feed-item-info">
-                <h1>Vero.</h1>
+                <h1>Autem!</h1>
                 <p>0.8km</p>
             </div>
         </header>
         <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
     <div class="feed-item">
         <header>
             <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
             <div class="feed-item-info">
-                <h1>Sapiente?</h1>
+                <h1>Incidunt?</h1>
                 <p>0.8km</p>
             </div>
         </header>
         <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
+    </div>
+    <div class="feed-item">
+        <header>
+            <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
+            <div class="feed-item-info">
+                <h1>Consequuntur!</h1>
+                <p>0.8km</p>
+            </div>
+        </header>
+        <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
     <div class="feed-item">
         <header>
@@ -99,56 +86,29 @@
             </div>
         </header>
         <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
     <div class="feed-item">
         <header>
             <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
             <div class="feed-item-info">
-                <h1>Aperiam?</h1>
+                <h1>Rem.</h1>
                 <p>0.8km</p>
             </div>
         </header>
         <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
     <div class="feed-item">
         <header>
             <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
             <div class="feed-item-info">
-                <h1>Placeat.</h1>
+                <h1>Quasi.</h1>
                 <p>0.8km</p>
             </div>
         </header>
         <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
-    </div>
-    <div class="feed-item">
-        <header>
-            <div class="feed-item-avatar"><img src="../assets/avatar.jpg" alt=""></div>
-            <div class="feed-item-info">
-                <h1>Impedit!</h1>
-                <p>0.8km</p>
-            </div>
-        </header>
-        <div class="feed-item-pic"><img src="../assets/picture.jpg" alt=""></div>
-        <div class="feed-item-btns">
-            <span>btn1</span>
-            <span>btn2</span>
-            <span>btn3</span>
-        </div>
+        <div class="feed-item-btns"><span class="btn-like"><img src="../assets/paw.svg" alt=""><span class="like-counter">00</span></span><span class="btn-msg"><img src="../assets/message.svg" alt=""><span class="msg-counter">00</span></span></div>
     </div>
   </q-page>
 </template>

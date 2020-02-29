@@ -32,6 +32,7 @@
         h1{
             font-weight: bold;
             padding-bottom: .5rem;
+            font-family: $fontRound;
         }
 
         p{
@@ -42,6 +43,45 @@
 
     &-btns{
         background: $lightBg;
-        padding: .5rem;
+        padding: .5rem 1rem;
+        display: flex;
+
+        .btn{
+
+            &-like{
+                display: flex;
+                align-items: center;
+
+                img{
+                    width: 20px;
+                    display: block;
+                }
+
+                .like-counter{
+                    font-size: 1rem;
+                    display: block;
+                    margin-left: .4rem;
+                    color: darken($lightBg, 40%);
+                }
+            }
+
+            &-msg{
+                display: flex;
+                align-items: center;
+                margin-left: 1rem;
+
+                img{
+                    width: 20px;
+                    display: block;
+                }
+
+                .msg-counter{
+                    font-size: 1rem;
+                    display: block;
+                    margin-left: .4rem;
+                    color: darken($lightBg, 40%);
+                }
+            }
+        }
     }
 }

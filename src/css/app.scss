@@ -1,5 +1,6 @@
 // app global css in SCSS form
 @import 'palette';
+@import 'fonts';
 
 img{
     max-width: 100%;
@@ -11,6 +12,10 @@ h1, p{
     margin: 0;
     font-size: 1rem;
     line-height: 1;
+}
+
+body{
+    font-family: $fontText;
 }
 
 @import 'header';

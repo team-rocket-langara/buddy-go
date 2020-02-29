@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'sf_compact_textregular';
+    src: url('../statics/fonts/fontsfree-net-sfcompacttext-regular-webfont.woff2') format('woff2'),
+         url('../statics/fonts/fontsfree-net-sfcompacttext-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'sf_compact_roundedregular';
+    src: url('../statics/fonts/fontsfree-net-sf-compact-rounded-regular-webfont.woff2') format('woff2'),
+         url('../statics/fonts/fontsfree-net-sf-compact-rounded-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+$fontRound: 'sf_compact_roundedregular';
+$fontText: 'sf_compact_textregular';
