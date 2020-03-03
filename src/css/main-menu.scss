@@ -2,9 +2,26 @@
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
     background: $primary;
-    padding-bottom: 2rem;
+    height: 70px;
+    padding: 0 .5rem;
+    display: flex;
+    align-items: center;
 
     .q-btn__wrapper:before{
         box-shadow: none;
+    }
+
+    .q-toolbar{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .home-btn{
+        width: 25px;
+    }
+    
+    .map-btn{
+        width: 25px;
     }
 }
