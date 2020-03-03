@@ -23,7 +23,7 @@
       <q-toolbar>
         <q-item
         clickable
-        to="/"
+        to="/feed"
         exact>
         <q-item-label>
           <img class="home-btn" src="../assets/home.svg" alt="">
@@ -31,7 +31,7 @@
         </q-item>
         <q-item
         clickable
-        to="/page"
+        to="/maps"
         exact>
         <q-item-label>
           <img class="map-btn" src="../assets/map.svg" alt="">
@@ -39,7 +39,7 @@
         </q-item>
         <q-item
         clickable
-        to="/page"
+        to="/outer"
         exact>
         <q-item-label>
           <img class="map-btn" src="../assets/map.svg" alt="">
