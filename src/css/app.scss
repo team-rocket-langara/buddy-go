@@ -18,6 +18,11 @@ body{
     font-family: $fontText;
 }
 
+.q-drawer--right{
+    background: $primary;
+}
+
 @import 'header';
 @import 'feed-item';
 @import 'main-menu';
+@import 'map';

@@ -12,7 +12,7 @@
     </q-header>
 
     <q-drawer v-model="right" side="right" behavior="mobile" elevated>
-      <!-- drawer content -->
+      
     </q-drawer>
 
     <q-page-container>
@@ -21,11 +21,46 @@
 
     <q-footer bordered class="main-menu">
       <q-toolbar>
-        <q-toolbar-title>
-        </q-toolbar-title>
-        <q-btn
-          label="First"
-        />
+        <q-item
+        clickable
+        to="/"
+        exact>
+        <q-item-label>
+          <img class="home-btn" src="../assets/home.svg" alt="">
+        </q-item-label>
+        </q-item>
+        <q-item
+        clickable
+        to="/page"
+        exact>
+        <q-item-label>
+          <img class="map-btn" src="../assets/map.svg" alt="">
+        </q-item-label>
+        </q-item>
+        <q-item
+        clickable
+        to="/page"
+        exact>
+        <q-item-label>
+          <img class="map-btn" src="../assets/map.svg" alt="">
+        </q-item-label>
+        </q-item>
+        <q-item
+        clickable
+        to="/page"
+        exact>
+        <q-item-label>
+          <img class="map-btn" src="../assets/map.svg" alt="">
+        </q-item-label>
+        </q-item>
+        <q-item
+        clickable
+        to="/page"
+        exact>
+        <q-item-label>
+          <img class="map-btn" src="../assets/map.svg" alt="">
+        </q-item-label>
+        </q-item>
       </q-toolbar>
     </q-footer>
 
