@@ -50,6 +50,13 @@ const routes = [
     ]
   },
   {
+    path: '/MyProfile',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/MyProfile.vue') }
+    ]
+  },
+  {
     path: '/',
     name: 'CreateAccount',
     component: () => import('pages/CreateAccount.vue')

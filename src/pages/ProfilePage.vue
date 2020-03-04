@@ -3,7 +3,7 @@
     
     <header class="profile-header">
         <div class="profile-avatar">
-            <img src="../assets/avatar.jpg">
+            <q-img src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260" :ratio="1" />
         </div>
         <div class="profile-info">
             <h1>Lorem.</h1>
@@ -27,14 +27,9 @@
     </div>
 
     <div class="profile-feed">
-      <q-item
-      clickable
-      to="/PostSingle"
-      >
-        <q-item-label>
-          <img src="../assets/picture.jpg">
-        </q-item-label>
-      </q-item>
+      <q-btn to="/PostSingle">
+        <q-img src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260" :ratio="1" />
+      </q-btn>
     </div>
 
   </q-page>

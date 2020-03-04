@@ -4,7 +4,7 @@
     <q-header bordered class="header">
       <q-toolbar>
         <q-toolbar-title>
-          <img src="../assets/logo-neg-hor.svg">
+          <img src="../assets/logo-top.svg">
         </q-toolbar-title>
 
         <q-btn dense flat round icon="menu" @click="right = !right" />
@@ -12,11 +12,23 @@
     </q-header>
 
     <q-drawer v-model="right" side="right" behavior="mobile" elevated>
+      <q-item
+        clickable
+        to="/MyProfile"
+        class="profile-btn-area"
+      >
+        <div class="absolute-top avatar-area">
+          <q-avatar size="56px" class="q-mb-sm">
+            <q-img src="https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" :ratio="1" />
+          </q-avatar>
+          <div class="user-name">
+            <p>Razvan Stoenescu</p>
+            <p>View Profile</p>
+          </div>
+        </div>
+      </q-item>
       <q-scroll-area class="fit">
         <q-list>
-
-          <q-item>
-          </q-item>
 
         </q-list>
       </q-scroll-area>
@@ -71,6 +83,7 @@
 
 <script>
 export default {
+  name: 'MainLayout',
   data () {
     return {
       right: false

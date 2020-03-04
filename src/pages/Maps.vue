@@ -1,22 +1,11 @@
 <template>
-<GmapMap
-  :center="{lat:10, lng:10}"
-  :zoom="7"
-  map-type-id="terrain"
->
-  <GmapMarker
-    :key="index"
-    v-for="(m, index) in markers"
-    :position="m.position"
-    :clickable="true"
-    :draggable="true"
-    @click="center=m.position"
-  />
-</GmapMap>
+  <q-page>
+    <q-item-label>
+    </q-item-label>
+  </q-page>
 </template>
 
 <script>
-import {gmapApi} from 'vue2-google-maps';
  
 export default {
 }

@@ -12,22 +12,19 @@
         width: 15%;
         overflow: hidden;
         margin-right: 1rem;
+        border-radius: 100%;
 
-        .q-item{
+        .q-btn__wrapper{            
             padding: 0;
             margin: 0;
+            
+            &:before{
+                box-shadow: none;
+            }
         }
 
-        img{            
-            border-radius: 100%;
-            display: block;
-        }
-    }
-
-    &-pic{
-
-        img{            
-            display: block;
+        .q-btn{
+            width: 100%;
         }
     }
 
@@ -94,6 +91,15 @@
                     color: darken($lightBg, 40%);
                 }
             }
+        }
+    }
+
+    &-title{
+        padding: 0 1rem .9rem 1rem;
+
+        h1{
+            font-size: .8rem;
+            line-height: 1.4;
         }
     }
 }
