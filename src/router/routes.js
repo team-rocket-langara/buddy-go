@@ -1,30 +1,65 @@
 
 const routes = [
   {
-    path: '/feed',
+    path: '/FeedFollowing',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Feed.vue') }
+      { path: '', component: () => import('pages/FeedFollowing.vue') }
     ]
   },
   {
-    path: '/maps',
+    path: '/Maps',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Maps.vue') }
     ]
   },
   {
-    path: '/profile',
+    path: '/ProfilePage',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ProfilePage.vue') }
     ]
   },
   {
+    path: '/PostSingle',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/PostSingle.vue') }
+    ]
+  },
+  {
+    path: '/BuddyAdopt',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/BuddyAdopt.vue') }
+    ]
+  },
+  {
+    path: '/Camera',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Camera.vue') }
+    ]
+  },
+  {
+    path: '/ChatList',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/ChatList.vue') }
+    ]
+  },
+  {
+    path: '/MyProfile',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/MyProfile.vue') }
+    ]
+  },
+  {
     path: '/',
-    name: 'loginPage',
-    component: () => import('pages/Login.vue')
+    name: 'CreateAccount',
+    component: () => import('pages/CreateAccount.vue')
   }
 ]
 

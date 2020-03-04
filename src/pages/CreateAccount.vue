@@ -12,7 +12,7 @@
       <input type="text" placeholder="Password">
       <p>By creating an account, you agree to our Terms of Service and Privacy Policy</p>
     </div>
-    <q-btn to="/feed">
+    <q-btn to="/FeedFollowing">
       Continue
     </q-btn>
   </div>
