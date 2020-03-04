@@ -22,6 +22,13 @@ const routes = [
     ]
   },
   {
+    path: '/postsingle',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/PostSingle.vue') }
+    ]
+  },
+  {
     path: '/',
     name: 'loginPage',
     component: () => import('pages/Login.vue')

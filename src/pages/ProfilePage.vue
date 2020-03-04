@@ -24,22 +24,34 @@
       </q-btn>
     </div>
     <div class="profile-feed">
-      <q-item>
+      <q-item
+      clickable
+      to="/postsingle"
+      >
         <q-item-label>
           <img src="../assets/picture.jpg">
         </q-item-label>
       </q-item>
-      <q-item>
+      <q-item
+      clickable
+      to="/postsingle"
+      >
         <q-item-label>
           <img src="../assets/picture.jpg">
         </q-item-label>
       </q-item>
-      <q-item>
+      <q-item
+      clickable
+      to="/postsingle"
+      >
         <q-item-label>
           <img src="../assets/picture.jpg">
         </q-item-label>
       </q-item>
-      <q-item>
+      <q-item
+      clickable
+      to="/postsingle"
+      >
         <q-item-label>
           <img src="../assets/picture.jpg">
         </q-item-label>

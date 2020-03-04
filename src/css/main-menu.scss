@@ -35,7 +35,7 @@
         }
 
         &-camera{
-            background-image: url('../assets/map.svg');
+            background-image: url('../assets/icon-photo.svg');
         }
 
         &-paw{
@@ -60,6 +60,10 @@
 
             &-map{
                 background-image: url('../assets/map-active.svg');
+            }
+
+            &-camera{
+                background-image: url('../assets/icon-photo-active.svg');
             }
 
             &-paw{

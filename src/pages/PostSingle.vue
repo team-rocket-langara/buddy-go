@@ -28,6 +28,9 @@
           </span>
         </div>
     </div>
+    <div class="comment-area">
+        
+    </div>
   </q-page>
 </template>
 
