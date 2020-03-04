@@ -23,42 +23,30 @@
       <q-toolbar>
         <q-item
         clickable
-        to="/"
+        to="/feed"
         exact>
-        <q-item-label>
-          <img class="home-btn" src="../assets/home.svg" alt="">
+        <q-item-label class="btn-home">
+        </q-item-label>
+        </q-item>
+        <q-item
+        clickable
+        to="/maps"
+        exact>
+        <q-item-label class="btn-map">
+        </q-item-label>
+        </q-item>
+        <q-item
+        clickable
+        to="/outer"
+        exact>
+        <q-item-label class="btn-camera">
         </q-item-label>
         </q-item>
         <q-item
         clickable
         to="/page"
         exact>
-        <q-item-label>
-          <img class="map-btn" src="../assets/map.svg" alt="">
-        </q-item-label>
-        </q-item>
-        <q-item
-        clickable
-        to="/page"
-        exact>
-        <q-item-label>
-          <img class="map-btn" src="../assets/map.svg" alt="">
-        </q-item-label>
-        </q-item>
-        <q-item
-        clickable
-        to="/page"
-        exact>
-        <q-item-label>
-          <img class="map-btn" src="../assets/map.svg" alt="">
-        </q-item-label>
-        </q-item>
-        <q-item
-        clickable
-        to="/page"
-        exact>
-        <q-item-label>
-          <img class="map-btn" src="../assets/map.svg" alt="">
+        <q-item-label class="btn-paw">
         </q-item-label>
         </q-item>
       </q-toolbar>

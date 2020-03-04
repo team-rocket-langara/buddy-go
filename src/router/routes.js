@@ -1,18 +1,30 @@
 
 const routes = [
   {
-    path: '/',
+    path: '/feed',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', component: () => import('pages/Feed.vue') }
     ]
   },
   {
-    path: '/page',
+    path: '/maps',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/page.vue') }
+      { path: '', component: () => import('pages/Maps.vue') }
     ]
+  },
+  {
+    path: '/profile',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/ProfilePage.vue') }
+    ]
+  },
+  {
+    path: '/',
+    name: 'loginPage',
+    component: () => import('pages/Login.vue')
   }
 ]
 
