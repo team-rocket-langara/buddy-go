@@ -12,7 +12,14 @@
     </q-header>
 
     <q-drawer v-model="right" side="right" behavior="mobile" elevated>
-      
+      <q-scroll-area class="fit">
+        <q-list>
+
+          <q-item>
+          </q-item>
+
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
@@ -23,30 +30,37 @@
       <q-toolbar>
         <q-item
         clickable
-        to="/feed"
+        to="/FeedFollowing"
         exact>
         <q-item-label class="btn-home">
         </q-item-label>
         </q-item>
         <q-item
         clickable
-        to="/maps"
+        to="/Maps"
         exact>
         <q-item-label class="btn-map">
         </q-item-label>
         </q-item>
         <q-item
         clickable
-        to="/outer"
+        to="/Camera"
         exact>
         <q-item-label class="btn-camera">
         </q-item-label>
         </q-item>
         <q-item
         clickable
-        to="/page"
+        to="/BuddyAdopt"
         exact>
         <q-item-label class="btn-paw">
+        </q-item-label>
+        </q-item>
+        <q-item
+        clickable
+        to="/ChatList"
+        exact>
+        <q-item-label class="btn-msg">
         </q-item-label>
         </q-item>
       </q-toolbar>

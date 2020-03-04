@@ -27,9 +27,12 @@ body{
     background: $primary;
 }
 
-@import 'login';
-@import 'header';
-@import 'feed-item';
-@import 'main-menu';
-@import 'map';
-@import 'profile';
+.q-hoverable:hover > .q-focus-helper{
+    background: none;
+}
+
+@import 'MainLayout';
+@import 'CreateAccount';
+@import 'FeedFollowers';
+@import 'Maps';
+@import 'ProfilePage';

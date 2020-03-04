@@ -1,3 +1,24 @@
+.header{
+    background-color: $primary;
+    text-align: center;
+
+    .q-toolbar{
+        display: flex;
+        align-items: center;
+        height: 60px;
+    }
+
+    .q-toolbar__title{
+        display: flex;
+        justify-content: center;
+    }
+
+    img{
+        width: 30%;
+        margin-left: 3rem;
+    }
+}
+
 .main-menu{
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
@@ -19,11 +40,12 @@
 
     .btn{
 
-        &-home, &-map, &-camera, &-paw{
+        &-home, &-map, &-camera, &-paw, &-msg{
             width: 30px;
             background-repeat: no-repeat;
             background-size: 90%;
             background-position: center;
+            padding: 0;
         }
 
         &-home{
@@ -36,10 +58,15 @@
 
         &-camera{
             background-image: url('../assets/icon-photo.svg');
+            background-size: 100%;
         }
 
         &-paw{
             background-image: url('../assets/paw.svg');
+        }
+
+        &-msg{
+            background-image: url('../assets/message.svg');
         }
     }
 
@@ -47,7 +74,7 @@
 
         .btn{
 
-            &-home, &-map, &-camera, &-paw{
+            &-home, &-map, &-camera, &-paw, &-msg{
                 width: 30px;
                 background-repeat: no-repeat;
                 background-size: 90%;
@@ -64,10 +91,15 @@
 
             &-camera{
                 background-image: url('../assets/icon-photo-active.svg');
+                background-size: 100%;
             }
 
             &-paw{
                 background-image: url('../assets/paw-active.svg');
+            }
+
+            &-msg{
+                background-image: url('../assets/message-active.svg');
             }
         }
     }
