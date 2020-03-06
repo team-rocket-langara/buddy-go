@@ -1,24 +1,30 @@
-.chat-text-box{
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
-    background: $primary;
-    height: 70px;
-    padding: 0 .5rem;
-    display: flex;
-    align-items: center;
+.chatroom-body{
+    padding: 1rem;
 
-    .q-field{
-        width: 100%;
-        padding: 1rem 1rem;
-
-        &__inner{
-            background: white;
-            border-radius: 50px;
-            padding: 0 1rem;
+    .q-message-text--sent{
+        background: lighten($primary, 60%);
+        color: lighten($primary, 60%);
+        
+        span{
+            color: $primary;
         }
     }
 
-    input{
-        text-decoration: none;
+    .q-message-text--received{
+        background: $lightBg;
+        color: $lightBg;
+        
+        span{
+            color: $primary;
+        }
+    }
+
+    .q-message-label{
+        background: $accent;
+        width: 30%;
+        margin: 0 auto 1rem auto;
+        padding: .5rem;
+        border-radius: 50px;
+        color: $primary;
     }
 }

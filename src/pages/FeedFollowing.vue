@@ -51,8 +51,13 @@
           <span class="like-counter">{{ feedItem.feedLike }}</span>
         </span>
         <span class="btn-msg">
+          <q-item
+          clickable
+          to="/PostSingle"
+          >
           <img src="~assets/message-feed.svg">
           <span class="msg-counter">{{ feedItem.feedComments }}</span>
+          </q-item>
         </span>
       </div>
       <!-- /Feed Item Btns -->

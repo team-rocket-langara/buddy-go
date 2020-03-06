@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: '/PostSingle',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/CommentLayout.vue'),
     children: [
       { path: '', component: () => import('pages/PostSingle.vue') }
     ]

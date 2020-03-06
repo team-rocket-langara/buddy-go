@@ -1,6 +1,8 @@
 <template>
   <q-page>
+
       <div class="feed-item">
+
         <header>
             <div class="feed-item-avatar">
               <q-btn to="/ProfilePage">
@@ -22,6 +24,7 @@
         <div class="feed-item-pic">
           <q-img src="https://images.pexels.com/photos/177809/pexels-photo-177809.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" :ratio="1" />
         </div>
+
         <div class="feed-item-btns">
           <span class="btn-like">
             <img src="~assets/paw-like.svg">
@@ -32,10 +35,20 @@
             <span class="msg-counter">00</span>
           </span>
         </div>
+
     </div>
+
     <div class="comment-area">
-        
+        <ul>
+          <li>
+            <a href="#/ProfilePage">Charlie</a> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde officiis repudiandae repellendus enim sit esse, totam modi sed asperiores. Sequi, saepe ea eaque recusandae alias dolore. Aliquam illum quas reprehenderit!
+          </li>
+          <li>
+            <a href="#/ProfilePage">Charlie</a> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde officiis repudiandae repellendus enim sit esse, totam modi sed asperiores. Sequi, saepe ea eaque recusandae alias dolore. Aliquam illum quas reprehenderit!
+          </li>
+        </ul>
     </div>
+
   </q-page>
 </template>
 

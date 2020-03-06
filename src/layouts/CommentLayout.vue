@@ -9,7 +9,7 @@
         </q-btn>
         
         <q-toolbar-title class="chat-layout-header">
-          Messages
+          Comments
         </q-toolbar-title>
 
         <q-btn dense flat round icon="menu" @click="right = !right" />

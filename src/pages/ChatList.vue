@@ -7,6 +7,7 @@
       <q-input
         v-model="search"
         placeholder="Search"
+        dense
       >      
         <template v-slot:append>
           <q-icon name="search" />
