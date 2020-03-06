@@ -1,0 +1,79 @@
+.chat-list{
+
+    .q-field{
+        background: white;
+        width: 100%;
+        position: fixed;
+        z-index: 5000;
+        padding: 1rem 1rem;
+        margin: 0;
+        top: 61px;
+        border-bottom: 1px solid $lightBg;
+
+        &__inner{
+            background: $lightBg;
+            border-radius: 50px;
+            padding: 0 1rem;
+        }
+    }
+
+    .q-list{        
+        margin-top: 100px;
+    }
+
+    .q-btn{
+        width: 100%;
+        margin: 0;
+        padding: .5rem 1rem;
+        
+        &__wrapper{            
+            padding: 0;
+            margin: 0;
+            
+            &:before{
+                box-shadow: none;
+            }
+        }
+
+        &__content{
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: left;
+        }
+    }
+
+    .q-img{
+        width: 15%;
+        border-radius: 100%;
+    }
+
+    &-preview{
+        width: 70%;
+        padding-left: 1rem;
+
+        ul{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            
+            li{
+                padding: 0;
+                margin: 0;
+                text-align: left;
+                line-height: 1;
+
+                &:first-child{
+                    color: $primary;
+                    font-family: $fontRound;
+                    font-weight: bold;
+                    text-transform: capitalize;
+                    font-size: 1rem;
+                }
+
+                &:nth-child(2){
+                    text-transform: initial;
+                }
+            }
+        }
+    }
+}

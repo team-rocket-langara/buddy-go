@@ -31,9 +31,52 @@ body{
     background: none;
 }
 
+.q-field--standard .q-field__control:hover:before{
+    border: none;
+}
+
+.q-field--standard .q-field__control:before{
+    border: none;
+}
+
+.q-field--standard .q-field__control:after{
+    height: 0;
+}
+
+.back-btn{
+    width: 40px;
+
+    .q-btn__wrapper{
+        padding: 0;
+        margin: 0;
+
+        img{
+            padding: 0;
+            margin: 0;
+        }
+    }
+}
+
+.q-page{
+    min-height: 0 !important;
+}
+
+.q-drawer{
+    z-index: 9999;
+
+    &__backdrop{
+        z-index: 9998 !important;
+    }
+}
+
 @import 'MainLayout';
 @import 'CreateAccount';
 @import 'FeedFollowing';
 @import 'Maps';
 @import 'ProfilePage';
 @import 'MyProfile';
+@import 'AboutMe';
+@import 'ChatList';
+@import 'ChatRoom';
+@import 'ChatLayout';
+@import 'PostSingle';

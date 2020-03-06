@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: '/PostSingle',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/CommentLayout.vue'),
     children: [
       { path: '', component: () => import('pages/PostSingle.vue') }
     ]
@@ -57,9 +57,21 @@ const routes = [
     ]
   },
   {
+    path: '/ChatRoom',
+    component: () => import('layouts/ChatLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/ChatRoom.vue') }
+    ]
+  },
+  {
     path: '/',
     name: 'CreateAccount',
     component: () => import('pages/CreateAccount.vue')
+  },
+  {
+    path: '/AboutMe',
+    name: 'AboutMe',
+    component: () => import('pages/AboutMe.vue')
   }
 ]
 
