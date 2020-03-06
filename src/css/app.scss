@@ -59,6 +59,12 @@ body{
 
 .q-page{
     min-height: 0 !important;
+
+    .q-item{
+        min-height: 0;
+        padding: 0;
+        margin: 0;
+    }
 }
 
 .q-drawer{
@@ -80,3 +86,4 @@ body{
 @import 'ChatRoom';
 @import 'ChatLayout';
 @import 'PostSingle';
+@import 'AdoptPage';

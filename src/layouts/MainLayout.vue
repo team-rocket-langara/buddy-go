@@ -44,7 +44,7 @@
         </q-item>
         <q-item
         clickable
-        to="/BuddyAdopt"
+        to="/AdoptPage"
         exact>
         <q-item-label class="btn-paw">
         </q-item-label>

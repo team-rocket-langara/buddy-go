@@ -42,9 +42,11 @@
         <ul>
           <li>
             <a href="#/ProfilePage">Charlie</a> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde officiis repudiandae repellendus enim sit esse, totam modi sed asperiores. Sequi, saepe ea eaque recusandae alias dolore. Aliquam illum quas reprehenderit!
+            <p>Feb 7, 2020</p>
           </li>
           <li>
             <a href="#/ProfilePage">Charlie</a> Lorem, ipsum dolor sit amet consectetur adipisicing elit. Unde officiis repudiandae repellendus enim sit esse, totam modi sed asperiores. Sequi, saepe ea eaque recusandae alias dolore. Aliquam illum quas reprehenderit!
+            <p>Feb 7, 2020</p>
           </li>
         </ul>
     </div>

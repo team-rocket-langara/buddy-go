@@ -29,13 +29,6 @@ const routes = [
     ]
   },
   {
-    path: '/BuddyAdopt',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/BuddyAdopt.vue') }
-    ]
-  },
-  {
     path: '/Camera',
     component: () => import('layouts/MainLayout.vue'),
     children: [
@@ -61,6 +54,13 @@ const routes = [
     component: () => import('layouts/ChatLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ChatRoom.vue') }
+    ]
+  },
+  {
+    path: '/AdoptPage',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/AdoptPage.vue') }
     ]
   },
   {

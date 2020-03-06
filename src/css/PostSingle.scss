@@ -19,6 +19,12 @@
                 font-family: $fontRound;
                 text-decoration: none;
             }
+
+            p{
+                font-size: .8rem;
+                color: darken($lightBg, 30%);
+                padding: .1rem 0 .3rem 0;
+            }
         }
     }
 }
