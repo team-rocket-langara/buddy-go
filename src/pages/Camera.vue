@@ -3,7 +3,6 @@
     <q-btn color="primary" label="Get Picture" @click="captureImage" />
     <q-img
       :src="imageSrc"
-      placeholder-src="statics/quasar-logo.png"
       :alt="'Imagem: ' + imageSrc" id="photo"
     />
   </q-page>

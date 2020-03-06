@@ -24,11 +24,11 @@
         </div>
         <div class="feed-item-btns">
           <span class="btn-like">
-            <img src="../assets/paw-like.svg">
+            <img src="~assets/paw-like.svg">
             <span class="like-counter">00</span>
           </span>
           <span class="btn-msg">
-            <img src="../assets/message-feed.svg">
+            <img src="~assets/message-feed.svg">
             <span class="msg-counter">00</span>
           </span>
         </div>

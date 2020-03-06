@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpR fFf"> <!-- Be sure to play with the Layout demo on docs -->
 
     <q-header bordered class="header">
       <q-toolbar>
@@ -37,50 +37,22 @@
           </div>
         </div>
       </q-item>
-
     </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
 
-    <q-footer bordered class="main-menu">
+    <q-footer bordered class="chat-text-box">
       <q-toolbar>
-        <q-item
-        clickable
-        to="/FeedFollowing"
-        exact>
-        <q-item-label class="btn-home">
-        </q-item-label>
-        </q-item>
-        <q-item
-        clickable
-        to="/Maps"
-        exact>
-        <q-item-label class="btn-map">
-        </q-item-label>
-        </q-item>
-        <q-item
-        clickable
-        to="/Camera"
-        exact>
-        <q-item-label class="btn-camera">
-        </q-item-label>
-        </q-item>
-        <q-item
-        clickable
-        to="/BuddyAdopt"
-        exact>
-        <q-item-label class="btn-paw">
-        </q-item-label>
-        </q-item>
-        <q-item
-        clickable
-        to="/ChatList"
-        exact>
-        <q-item-label class="btn-msg">
-        </q-item-label>
-        </q-item>
+        <q-input
+        v-model="text"
+        placeholder=""
+        >
+        </q-input>
+        <q-btn>
+          S
+        </q-btn>
       </q-toolbar>
     </q-footer>
 
@@ -89,7 +61,7 @@
 
 <script>
 export default {
-  name: 'MainLayout',
+  name: 'ChatLayout',
   data () {
     return {
       right: false

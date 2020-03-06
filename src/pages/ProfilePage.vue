@@ -10,7 +10,7 @@
             <p>000 Followers &bull; 000 Following</p>
             <q-item
             clickable
-            to="/ProfileAbout"
+            to="/AboutMe"
             class="btn-about"
             >
               <q-item-label>

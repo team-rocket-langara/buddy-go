@@ -1,7 +1,7 @@
 <template>
   <div class="login-body">
     <div class="login-logo">
-      <img src="../assets/symbol-pos.svg">
+      <img src="~assets/symbol-pos.svg">
     </div>
     <div class="login-title">
       <h1>Create your Account</h1>

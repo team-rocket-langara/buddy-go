@@ -31,9 +31,24 @@ body{
     background: none;
 }
 
+.q-field--standard .q-field__control:hover:before{
+    border: none;
+}
+
+.q-field--standard .q-field__control:before{
+    border: none;
+}
+
+.q-field--standard .q-field__control:after{
+    height: 0;
+}
+
 @import 'MainLayout';
 @import 'CreateAccount';
 @import 'FeedFollowing';
 @import 'Maps';
 @import 'ProfilePage';
 @import 'MyProfile';
+@import 'AboutMe';
+@import 'ChatList';
+@import 'ChatRoom';
