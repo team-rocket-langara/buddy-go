@@ -1,0 +1,39 @@
+.q-drawer{
+    z-index: 9999;
+
+    .absolute-top{
+        z-index: 9999;
+    }
+
+    &__backdrop{
+        z-index: 9998 !important;
+    }
+
+    &--right{
+        background: $primary;
+    }
+
+    .q-list{
+        font-size: 1.3rem;
+        padding: 120px 1rem 0 1rem;
+        
+        a{
+            color: $accent;
+            text-align: right;
+        }
+
+        .q-item{
+            text-align: right;
+            color: $accent;
+
+            &__label{
+                width: 100%;
+            }
+        }
+    }
+
+    .q-avatar{
+        margin: 0 0 0 1rem;
+        padding: 0;
+    }
+}

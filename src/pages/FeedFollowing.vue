@@ -1,69 +1,83 @@
 <template>
-  <q-page>
-    <!-- Feed Item -->
-    <div v-for="feedItem in feedItems" v-bind:key="feedItem.id" class="feed-item">
+  <q-page class="post-list">
 
-      <!-- Feed Header -->
+    <!-- Post Item -->
+    <div v-for="postItem in postItems" v-bind:key="postItem.id" class="post-list-item">
+
+      <!-- Post Header -->
       <header>
 
-        <!-- Feed Item Avatar -->
-        <div class="feed-item-avatar">
-          <q-btn to="/ProfilePage">
-              <q-img
-              :src="feedItem.feedAvatar"
-              :ratio="1"
-              />
-          </q-btn>            
-        </div>
-        <!-- /Feed Item Avatar -->
+        <!-- Post Item Avatar -->
+        <q-btn
+        to="/UserProfile"
+        :ripple="false"
+        >
 
-        <!-- Feed Item Info -->
-        <div class="feed-item-info">
-            <q-item clickable to="/ProfilePage">
-                <q-item-label>{{ feedItem.feedName }}</q-item-label>
-            </q-item>
-            <p>{{ feedItem.feedCheckIn }}</p>
-        </div>
-        <!-- /Feed Item Info -->
+          <q-avatar
+          size="48px"
+          >
 
-      </header>
-      <!-- /Feed Header -->
+            <q-img
+            :src="postItem.postAvatar"
+            :ratio="1"
+            />
 
-      <!-- Feed Item Title -->
-      <div class="feed-item-title">
-        <h1>{{ feedItem.feedTitle }}</h1>
-      </div>
-      <!-- /Feed Item Title -->
+          </q-avatar>
 
-      <!-- Feed Item Pic -->
-      <div class="feed-item-pic">
-        <q-img 
-        :src="feedItem.feedPicture"
-        :ratio="1"
-        />
-      </div>
-      <!-- /Feed Item Pic -->
+        </q-btn>
+        <!-- /Post Item Avatar -->
 
-      <!-- Feed Item Btns -->
-      <div class="feed-item-btns">
-        <span class="btn-like">
-          <img src="~assets/paw-like.svg">
-          <span class="like-counter">{{ feedItem.feedLike }}</span>
-        </span>
-        <span class="btn-msg">
+        <!-- Post Item Info -->
+        <div class="post-list-info">
           <q-item
           clickable
-          to="/PostSingle"
+          to="/UserProfile"
           >
-          <img src="~assets/message-feed.svg">
-          <span class="msg-counter">{{ feedItem.feedComments }}</span>
+            <q-item-section>
+              <q-item-label overline>{{ postItem.postName }}</q-item-label>
+              <q-item-label caption>{{ postItem.postCheckIn }}</q-item-label>
+            </q-item-section>
           </q-item>
-        </span>
+        </div>
+        <!-- /Post Item Info -->
+
+      </header>
+      <!-- /Post Header -->
+
+      <!-- Post Item Title -->
+      <div class="post-list-title">
+        <h1>{{ postItem.postTitle }}</h1>
       </div>
-      <!-- /Feed Item Btns -->
+      <!-- /Post Item Title -->
+
+      <!-- Post Item Pic -->
+      <q-img
+      :src="postItem.postPicture"
+      ratio="1"
+      />
+      <!-- /Post Item Pic -->
+
+      <!-- Post Item Btns -->
+      <div class="post-list-social">
+        <q-btn
+        class="btn-social"
+        >
+          <img src="../assets/layout/paw-icon.svg">
+        </q-btn>
+        <p class="counter">{{ postItem.postLike }}</p>
+        <q-btn
+        class="btn-social"
+        to="/SinglePost"
+        >
+          <img src="../assets/layout/comments-icon.svg">
+        </q-btn>
+        <p class="counter">{{ postItem.postComments }}</p>
+      </div>
+      <!-- /Post Item Btns -->
 
     </div>
-    <!-- /Feed Item -->
+    <!-- /Post Item -->
+
   </q-page>
 </template>
 
@@ -72,24 +86,24 @@ export default {
   name: 'FeedFollowing',
   data() {
     return {
-      feedItems: [
+      postItems: [
         {
-          feedAvatar: 'https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-          feedName: 'Charlie',
-          feedCheckIn: 'Stanley Park',
-          feedTitle: "Hello, Buddies! Here I'm enjoying the summer. It would be great if you could be here with me!",
-          feedPicture: "https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-          feedLike: '25',
-          feedComments: '38'
+          postAvatar: 'https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+          postName: 'Charlie',
+          postCheckIn: 'Stanley Park',
+          postTitle: "Hello, Buddies! Here I'm enjoying the summer. It would be great if you could be here with me!",
+          postPicture: "https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+          postLike: '25',
+          postComments: '38'
         },
         {
-          feedAvatar: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-          feedName: 'Lorie',
-          feedCheckIn: 'Trout Lake Park',
-          feedTitle: "Happy vibes!",
-          feedPicture: "https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-          feedLike: '12',
-          feedComments: '25'
+          postAvatar: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+          postName: 'Lorie',
+          postCheckIn: 'Trout Lake Park',
+          postTitle: "Happy vibes!",
+          postPicture: "https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+          postLike: '12',
+          postComments: '25'
         }
       ]
     }

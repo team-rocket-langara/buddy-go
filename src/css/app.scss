@@ -1,7 +1,19 @@
 // app global css in SCSS form
 @import 'palette';
 @import 'fonts';
+@import 'buttons';
+@import 'main-layout';
+@import 'single-post-layout';
+@import 'drawer';
+@import 'post-list';
+@import 'user-profile';
+@import 'pictures';
+@import 'about-me';
+@import 'adopt-page';
+@import 'chat';
+@import 'login';
 
+// GLOBALS ===================================
 img{
     max-width: 100%;
     height: auto;
@@ -12,47 +24,47 @@ img{
     outline: none;
 }
 
-h1, p{
+body{
     padding: 0;
     margin: 0;
-    font-size: 1rem;
-    line-height: 1;
-}
-
-body{
     font-family: $fontText;
+    line-height: 1;
+    font-size: 1rem;
 }
 
-.q-drawer--right{
-    background: $primary;
+h1,
+h2,
+h3,
+p,
+ul,
+li{
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    font-size: 1rem;
 }
 
-.q-hoverable:hover > .q-focus-helper{
-    background: none;
+ul{
+    list-style: none;
 }
 
-.q-field--standard .q-field__control:hover:before{
-    border: none;
+.q-item{
+    min-height: 0 !important;
+    padding: 0;
+    margin: 0;
 }
 
-.q-field--standard .q-field__control:before{
-    border: none;
-}
+.q-field{
+    padding: 0 1rem;
+    
+    &__control{
 
-.q-field--standard .q-field__control:after{
-    height: 0;
-}
+        &::after{
+            height: 0 !important;
+        }
 
-.back-btn{
-    width: 40px;
-
-    .q-btn__wrapper{
-        padding: 0;
-        margin: 0;
-
-        img{
-            padding: 0;
-            margin: 0;
+        &::before{
+            border: 0 !important;
         }
     }
 }
@@ -61,22 +73,10 @@ body{
     min-height: 0 !important;
 }
 
-.q-drawer{
-    z-index: 9999;
+.global{
 
-    &__backdrop{
-        z-index: 9998 !important;
+    &-separator{
+        display: flex;
+        padding: 0 1rem 1rem 1rem;
     }
 }
-
-@import 'MainLayout';
-@import 'CreateAccount';
-@import 'FeedFollowing';
-@import 'Maps';
-@import 'ProfilePage';
-@import 'MyProfile';
-@import 'AboutMe';
-@import 'ChatList';
-@import 'ChatRoom';
-@import 'ChatLayout';
-@import 'PostSingle';

@@ -1,0 +1,86 @@
+@import 'mixins';
+
+.chat{
+    
+    &-list{
+        padding-top: 100px;
+
+        .q-field{
+            background: white;
+            width: 100%;
+            position: fixed;
+            z-index: 5000;
+            padding: 1rem 1rem;
+            margin: 0;
+            top: 61px;
+            border-bottom: 1px solid $lightBg;
+
+            &__inner{
+                background: $lightBg;
+                border-radius: 50px;
+                padding: 0 1rem;
+            }
+        }
+
+        .q-slide-item{
+            margin-bottom: .7rem;
+
+            &__right{
+                background: $error;
+            }
+        }
+
+        .q-list{
+            padding: 0 1rem;
+        }
+
+        @include customItem(black, darken($lightBg, 40%), 1rem, .8rem, .04rem);
+    }
+
+    &-room{
+        padding: 1rem;
+
+        .q-message{
+
+            &-text{
+                
+                &--sent{
+                    color: lighten($primary, 65%);
+                }
+
+                &--received{
+                    color: $lightBg;
+                }
+            }
+
+            &-label{
+                background: $accent;
+                width: 40%;
+                margin-left: auto;
+                margin-right: auto;
+                padding: .5rem;
+                border-radius: 50px;
+                color: $primary;
+                font-weight: bold;
+            }
+
+            &-container{
+                margin-bottom: 1rem;
+            }
+
+            &-sent{
+
+                .q-avatar{
+                    margin-left: .5rem;
+                }
+            }
+        
+            &-received{
+                
+                .q-avatar{
+                    margin-right: .5rem;
+                }
+            }
+        }
+    }
+}

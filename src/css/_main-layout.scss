@@ -1,0 +1,38 @@
+// Main Header ===============================
+.main-header{
+    background-color: $primary;
+    text-align: center;
+
+    .q-toolbar{
+        display: flex;
+        align-items: center;
+        height: 60px;
+
+        &__title{
+            display: flex;
+            justify-content: center;
+
+            img{
+                width: 50%;
+                margin-left: 3rem;
+            }
+        }
+    }
+}
+
+// Main Menu =================================
+.main-menu{
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    background: $primary;
+    height: 70px;
+    padding: 0 .5rem;
+    display: flex;
+    align-items: center;
+
+    .q-toolbar{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+}

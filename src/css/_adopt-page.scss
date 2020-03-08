@@ -1,0 +1,29 @@
+.adopt-page{
+
+    &-name{
+        text-align: center;
+    }
+
+    &-title{
+        font-size: 2.5rem;
+        color: $primary;
+        font-family: $fontRound;
+        font-weight: bolder;
+        margin-top: 1rem;
+    }
+
+    &-subtitle{
+        width: 70%;
+        margin: 1rem auto 2rem auto;
+        line-height: 1.5;
+        font-size: .9rem;
+    }
+
+    header{
+        margin-top: 1rem;
+    }
+
+    .post-list-info{
+        padding-left: 0;
+    }
+}

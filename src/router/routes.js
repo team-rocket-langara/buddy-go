@@ -1,6 +1,14 @@
 
 const routes = [
   {
+    path: '/',
+    component: () => import('pages/Login.vue')
+  },
+  {
+    path: '/CreateAccount',
+    component: () => import('pages/CreateAccount.vue')
+  },
+  {
     path: '/FeedFollowing',
     component: () => import('layouts/MainLayout.vue'),
     children: [
@@ -8,38 +16,28 @@ const routes = [
     ]
   },
   {
-    path: '/Maps',
+    path: '/UserProfile',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Maps.vue') }
+      { path: '', component: () => import('pages/UserProfile.vue') }
     ]
   },
   {
-    path: '/ProfilePage',
-    component: () => import('layouts/MainLayout.vue'),
+    path: '/SinglePost',
+    component: () => import('layouts/SinglePostLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/ProfilePage.vue') }
+      { path: '', component: () => import('pages/SinglePost.vue') }
     ]
   },
   {
-    path: '/PostSingle',
-    component: () => import('layouts/CommentLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/PostSingle.vue') }
-    ]
+    path: '/AboutMe',
+    component: () => import('pages/AboutMe.vue')
   },
   {
-    path: '/BuddyAdopt',
+    path: '/FeedAdopt',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/BuddyAdopt.vue') }
-    ]
-  },
-  {
-    path: '/Camera',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/Camera.vue') }
+      { path: '', component: () => import('pages/FeedAdopt.vue') }
     ]
   },
   {
@@ -50,28 +48,11 @@ const routes = [
     ]
   },
   {
-    path: '/MyProfile',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/MyProfile.vue') }
-    ]
-  },
-  {
     path: '/ChatRoom',
-    component: () => import('layouts/ChatLayout.vue'),
+    component: () => import('layouts/ChatRoomLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ChatRoom.vue') }
     ]
-  },
-  {
-    path: '/',
-    name: 'CreateAccount',
-    component: () => import('pages/CreateAccount.vue')
-  },
-  {
-    path: '/AboutMe',
-    name: 'AboutMe',
-    component: () => import('pages/AboutMe.vue')
   }
 ]
 

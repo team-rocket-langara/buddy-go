@@ -1,63 +1,93 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <q-header bordered class="header">
+    <!-- Q Header -->
+    <q-header bordered class="main-header" >
+
       <q-toolbar>
         <q-toolbar-title>
-          <img src="../assets/logo-top.svg">
+          <img src="../assets/layout/buddy-go-logo-top.svg">
         </q-toolbar-title>
 
-        <q-btn dense flat round icon="menu" @click="right = !right" />
+        <q-btn dense flat icon="menu" @click="right = !right" />
       </q-toolbar>
+      
     </q-header>
+    <!-- /Q Header -->
 
+    <!-- Q Drawer -->
     <q-drawer v-model="right" side="right" behavior="mobile" elevated>
       <SideMenuContent />
     </q-drawer>
+    <!-- /Q Drawer -->
 
+    <!-- Q Page Container -->
     <q-page-container>
       <router-view />
     </q-page-container>
+    <!-- /Q Page Container -->
 
+  	<!-- Q Footer -->
     <q-footer bordered class="main-menu">
+
+      <!-- Q Toolbar -->
       <q-toolbar>
+
+        <!-- Btn Home -->
         <q-item
         clickable
         to="/FeedFollowing"
-        exact>
-        <q-item-label class="btn-home">
-        </q-item-label>
+        class="btn-home"
+        exact
+        >
         </q-item>
+        <!-- /Btn Home -->
+
+        <!-- Btn Map -->
         <q-item
         clickable
-        to="/Maps"
-        exact>
-        <q-item-label class="btn-map">
-        </q-item-label>
+        to="/Map"
+        class="btn-map"
+        exact
+        >
         </q-item>
+        <!-- /Btn Map -->
+
+        <!-- Btn Camera -->
         <q-item
         clickable
         to="/Camera"
-        exact>
-        <q-item-label class="btn-camera">
-        </q-item-label>
+        class="btn-camera"
+        exact
+        >
         </q-item>
+        <!-- /Btn Camera -->
+
+        <!-- Btn Adopt -->
         <q-item
         clickable
-        to="/BuddyAdopt"
-        exact>
-        <q-item-label class="btn-paw">
-        </q-item-label>
+        to="/FeedAdopt"
+        class="btn-adopt"
+        exact
+        >
         </q-item>
+        <!-- /Btn Adopt -->
+
+        <!-- Btn Chat -->
         <q-item
         clickable
         to="/ChatList"
-        exact>
-        <q-item-label class="btn-msg">
-        </q-item-label>
+        class="btn-chat"
+        exact
+        >
         </q-item>
+        <!-- /Btn Chat -->
+
       </q-toolbar>
+      <!-- /Q Toolbar -->
+
     </q-footer>
+    <!-- /Q Footer -->
 
   </q-layout>
 </template>

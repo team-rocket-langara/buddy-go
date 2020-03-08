@@ -1,0 +1,72 @@
+@import 'mixins';
+
+.post-list{
+    padding-top: 1rem;
+
+    &-item{
+        padding-bottom: 1rem;
+
+        header{
+            display: flex;
+            padding: 0 1rem;
+
+            .q-avatar{
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+
+    &-info{
+        display: flex;
+        align-items: center;
+        padding-left: 1rem;
+    }
+
+    &-title{
+        padding: 1rem;
+        
+        h1{
+            font-size: .9rem;
+            line-height: 1.4;
+        }
+    }
+
+    &-social{
+        padding: .5rem 1rem;
+        background: $lightBg;
+        display: flex;
+        align-items: center;
+
+        .counter{
+            color: darken($lightBg, 50%);
+            margin: 0 .5rem;
+        }
+    }
+
+    &-comments-wrapper{
+        padding: 1rem;
+        
+        li{
+            line-height: 1.3;
+            margin-bottom: .8rem;
+
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+
+        .name{
+            color: $primary;
+            font-family: $fontRound;
+            font-weight: bold;
+        }
+
+        .date{
+            font-size: .8rem;
+            color: darken($lightBg, 40%);
+        }
+    }
+
+    @include customItem(black, darken($lightBg, 40%), 1rem, .8rem, .04rem);
+}

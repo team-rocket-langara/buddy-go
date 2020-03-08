@@ -1,0 +1,39 @@
+@import 'mixins';
+
+.user-profile{
+    padding-top: 1rem;
+
+    &-info{
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .q-avatar{
+        margin-right: 1rem;
+    }
+
+    &-name{
+
+        .q-list{
+            display: flex;
+            align-items: center;
+            margin-top: .3rem;
+            color: $primary;
+
+            .q-item{
+                
+                &:first-child{
+                    margin-right: .5rem;
+                }
+
+                &:nth-child(2){
+                    margin-left: .5rem;
+                }
+            }
+        }
+    }
+
+    @include customItem(black, darken($lightBg, 40%), 1.1rem, .9rem, .2rem);
+}
