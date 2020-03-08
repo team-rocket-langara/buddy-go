@@ -1,0 +1,22 @@
+@mixin customItem($colorOverline, $colorCaption, $fontSizeOverline, $fontSizeCaption, $marginBetween) {
+    
+    .q-item{
+
+        &__label{
+            letter-spacing: 0rem;
+            margin: $marginBetween;
+            
+            &--overline{
+                color: $colorOverline;
+                font-size: $fontSizeOverline;
+                font-weight: bold;
+            }
+    
+            &--caption{
+                font-size: $fontSizeCaption;
+                color: $colorCaption;
+            }
+        }
+    }
+
+}

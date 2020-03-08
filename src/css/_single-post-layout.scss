@@ -1,0 +1,39 @@
+// Single Post Header ===============================
+.single-post-header{
+    background-color: $primary;
+    text-align: center;
+
+    .q-toolbar{
+        display: flex;
+        align-items: center;
+        height: 60px;
+
+        &__title{
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
+// Single Post Input =================================
+.single-post-input{
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    background: $primary;
+    height: 70px;
+    padding: 0 .5rem;
+    display: flex;
+    align-items: center;
+
+    .q-toolbar{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .q-input{
+        background: white;
+        width: 80%;
+        border-radius: 50px;
+    }
+}

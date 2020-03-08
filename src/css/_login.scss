@@ -1,0 +1,55 @@
+.login{
+    background-image: url('../assets/layout/buddy-background.svg');
+    background-repeat: no-repeat;
+    background-size: left;
+    background-color: $primary;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding-top: 6rem;
+
+    &-logo{
+        width: 25%;
+
+        &-text{
+            width: 20%;
+            margin-left: 4px;
+            margin-top: .5rem;
+        }
+    }
+
+    h1{
+        font-size: 2.5rem;
+        color: white;
+        font-family: $fontRound;
+        margin-top: 6rem;
+        width: 80%;
+        text-align: center;
+        line-height: 1.2;
+        font-weight: 500;
+    }
+
+    &-btn-area{
+        width: 80%;
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        margin-top: 5rem;
+        bottom: 3rem;
+        position: absolute;
+
+        .btn-big{
+            margin-bottom: 1.5rem;
+            font-size: .9rem;
+
+            &:nth-child(3){
+                color: $accent;
+                font-size: 1.1rem;
+            }
+        }
+
+        .q-btn__wrapper{
+            text-transform: uppercase !important;
+        }
+    }
+}
