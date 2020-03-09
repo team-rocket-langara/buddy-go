@@ -2,11 +2,15 @@
 const routes = [
   {
     path: '/',
-    component: () => import('pages/Login.vue')
+    component: () => import('pages/Landing.vue')
   },
   {
     path: '/CreateAccount',
     component: () => import('pages/CreateAccount.vue')
+  },
+  {
+    path: '/Login',
+    component: () => import('pages/Login.vue')
   },
   {
     path: '/FeedFollowing',
@@ -45,6 +49,13 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ChatList.vue') }
+    ]
+  },
+  {
+    path: '/AdoptProfile',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/AdoptProfile.vue') }
     ]
   },
   {

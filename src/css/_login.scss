@@ -52,4 +52,12 @@
             text-transform: uppercase !important;
         }
     }
+
+    &-form{
+        width: 80%;
+        margin-top: 3rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }

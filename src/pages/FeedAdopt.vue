@@ -45,7 +45,7 @@
       <div class="global-separator">
         <q-btn
         class="btn-small btn-purple btn-round"
-        to="/AdoptPost"
+        to="/AdoptProfile"
         >
         Details
         </q-btn>

@@ -5,33 +5,39 @@
       <img src="../assets/layout/buddy-go-logo-login.svg">
     </div>
 
-    <div class="login-logo-text">
-      <img src="../assets/layout/buddy-go-logo-text-login.svg">
-    </div>
+    <h1>Welcome!</h1>
 
-    <h1>Connecting pets Everywhere!</h1>
-
-    <div class="login-btn-area">
-
-      <q-btn
-      class="btn-big btn-round btn-pink"
+    <div class="login-form">
+      <q-input
+      v-model="text"
+      label="Email"
+      :type="text"
+      class="input-textfield"
+      />
+      <q-input
+      v-model="password"
+      :type="isPwd ? 'password' : 'text'"
+      label="Password"
+      class="input-textfield"
       >
-      Sing up Free
-      </q-btn>
-
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>
       <q-btn
-      class="btn-big btn-round btn-facebook"
-      >
-      Continue with Facebook
-      </q-btn>
-
-      <q-btn
-      class="btn-big btn-round"
+      class="btn-big btn-round btn-yellow"
       to="/FeedFollowing"
       >
-      Log in
+      Continue
       </q-btn>
 
+      <q-item
+      class="btn-small">
+      Forgot your password?
+      </q-item>
     </div>
 
   </q-layout>
@@ -39,6 +45,24 @@
 
 <script>
 export default {
-  name: 'Login'
+  name: 'CreateAccount',
+  data () {
+    return {
+      isPwd: true
+    }
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '../css/palette';
+
+.btn-small{
+  margin-top: 3rem;
+  font-size: .8rem;
+  color: $accent;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-position: under;
+}
+</style>
