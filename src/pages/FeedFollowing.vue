@@ -61,6 +61,7 @@
       <div class="post-list-social">
         <q-btn
         class="btn-social"
+        @click="checkLogin()"
         >
           <img src="../assets/layout/paw-icon.svg">
         </q-btn>
@@ -82,6 +83,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'FeedFollowing',
   data() {
@@ -106,6 +109,12 @@ export default {
           postComments: '25'
         }
       ]
+    }
+  },
+  methods: {
+    ...mapActions('login', ['checkUser']),
+    checkLogin(){
+        this.checkUser()
     }
   }
 }
