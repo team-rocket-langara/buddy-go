@@ -71,7 +71,8 @@ export default {
           chatName: 'Lorie',
           chatLastMsg: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem nemo ut harum, iusto numquam quia vitae repudiandae facilis aut rem minus provident?" 
         }
-      ]
+      ],
+      search: ''
     }
   },
   methods: {

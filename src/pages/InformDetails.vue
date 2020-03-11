@@ -11,7 +11,7 @@
     >
 
       <q-input
-      v-model="formData.email"
+      v-model="formData.name"
       label="Pet's Name *"
       class="input-textfield"
       :rules="[
@@ -91,7 +91,7 @@ export default {
   methods: {
     ...mapActions('users', ['firstUpdate']),
     submitForm(){
-      this.firstUpdate(this.formData.name);
+      this.firstUpdate(this.formData);
     }
   }
 }

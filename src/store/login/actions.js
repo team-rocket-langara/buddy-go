@@ -1,6 +1,6 @@
 import { firebaseAuth } from 'boot/firebase'
 import * as firebase from "firebase/app"
-import VueRouter from 'vue-router'
+import router from 'src/router';
 
 export function loginAuth({}, payload){
   firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
@@ -19,27 +19,47 @@ export function loginAuth({}, payload){
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
-    console.log(`Code: ${errorCode} -- ${errorMessage}`);
+    console.log(`loginAuth() -> Code: ${errorCode} -- ${errorMessage}`);
   });
 }
 
 export function checkUser(){
-    firebaseAuth.onAuthStateChanged(function(user) {
-        if (user) {
-          // User is signed in.
-          var displayName = user.displayName;
-          var email = user.email;
-          var emailVerified = user.emailVerified;
-          var photoURL = user.photoURL;
-          var isAnonymous = user.isAnonymous;
-          var uid = user.uid;
-          var providerData = user.providerData;
+  firebaseAuth.onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      var uid = user.uid;
+      var providerData = user.providerData;
 
-          console.log(email)
-          // ...
-        } else {
-          // User is signed out.
-          // ...
-        }
-      });
+      console.log(displayName)
+      // ...
+    } else {
+      // User is signed out.
+      // ...
+    }
+  });
+}
+
+export function alreadyLogged(){
+  firebaseAuth.onAuthStateChanged(user => {
+    if (user) {
+      this.$router.push({ path: '/FeedFollowing'})
+    }
+  });
+}
+
+export function logOut(){
+  firebaseAuth.signOut()
+  .then(response => {
+    this.$router.push({ path: '/'})
+  })
+  .catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(`logOut() -> Code: ${errorCode} -- ${errorMessage}`);
+  })
 }

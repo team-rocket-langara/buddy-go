@@ -1,24 +1,32 @@
 import { firebaseAuth, firebaseDb } from 'boot/firebase'
-import VueRouter from 'vue-router'
+
 
 export function registerUser({}, payload) {
     firebaseAuth.createUserWithEmailAndPassword(payload.email, payload.password)
     .then(response => {
-        this.$router.push({ path: '/InformDetails'})
+        this.$router.push({
+            path: '/InformDetails'
+        })
     })
     .catch(function(error) {
-        console.error(error)
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(`Code: ${errorCode} -- ${errorMessage}`);
     })
 }
 
-export function firstUpdate(userName){
+export function firstUpdate({}, payload){
     firebaseAuth.currentUser.updateProfile({
-        displayName: userName
+        displayName: payload.name
     })
     .then(response => {
-        this.$router.push({ path: '/FeedFollowing'})
+        this.$router.push({
+            path: '/FeedFollowing'
+        })
     })
-    .catch(function(error){
-        console.log(error)
+    .catch(function(error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(`Code: ${errorCode} -- ${errorMessage}`);
     })
 }

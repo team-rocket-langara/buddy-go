@@ -42,7 +42,7 @@
 
       <q-item
       clickable
-      to="/"
+      @click="logginOut()"
       >
         <q-item-label>
           Logout
@@ -56,7 +56,15 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-  name: 'SideMenuContent'
+  name: 'SideMenuContent',
+  methods: {
+    ...mapActions('login', ['logOut']),
+    logginOut() {
+      this.logOut()
+    }
+  }
 }
 </script>
