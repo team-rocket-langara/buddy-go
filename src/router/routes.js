@@ -13,6 +13,10 @@ const routes = [
     component: () => import('pages/Login.vue')
   },
   {
+    path: '/InformDetails',
+    component: () => import('pages/InformDetails.vue')
+  },
+  {
     path: '/FeedFollowing',
     component: () => import('layouts/MainLayout.vue'),
     children: [
@@ -24,6 +28,13 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/UserProfile.vue') }
+    ]
+  },
+  {
+    path: '/Camera',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Camera.vue') }
     ]
   },
   {

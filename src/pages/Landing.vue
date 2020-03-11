@@ -29,6 +29,7 @@
       <q-btn
       class="btn-big btn-round"
       to="/Login"
+      :ripple="false"
       >
       Log in
       </q-btn>

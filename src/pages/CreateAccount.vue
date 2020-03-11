@@ -73,8 +73,7 @@ export default {
       formData: {
         email: '',
         password: '',
-        confirm: '',
-        displayName: ''
+        confirm: ''
       }
     }
   },
@@ -87,7 +86,8 @@ export default {
       else{
         this.$q.notify({
           message: "Confirmation doesn't match!",
-          color: 'negative'
+          color: 'negative',
+          position: 'top'
         })
       }
     }
@@ -97,6 +97,6 @@ export default {
 
 <style lang="scss" scoped>
 h1{
-  margin-top: 3rem;
+  margin-top: 13%;
 }
 </style>

@@ -60,6 +60,7 @@ ul{
     padding: 0 1rem;
     
     &__control{
+        color: $primary;
 
         &::after{
             height: 0 !important;
