@@ -96,7 +96,12 @@ export default {
     },
 
     onRight ({ reset }) {
-      this.$q.notify('Chat Deleted.')
+      this.$q.notify({
+        position: 'top',
+        caption: 'Chat Deleted',
+        color: 'negative',
+        timeout: 1000
+      })
       this.finalize(reset)
     },
 

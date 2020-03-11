@@ -5,40 +5,84 @@
       <img src="../assets/layout/buddy-go-logo-login.svg">
     </div>
 
-    <div class="login-logo-text">
-      <img src="../assets/layout/buddy-go-logo-text-login.svg">
-    </div>
+    <h1>Welcome!</h1>
 
-    <h1>Connecting pets Everywhere!</h1>
+    <q-form
+    class="login-form"
+    @submit="submitForm()">
 
-    <div class="login-btn-area">
-
-      <q-btn
-      class="btn-big btn-round btn-pink"
+      <q-input
+      v-model="formData.email"
+      label="Email"
+      class="input-textfield"
+      :rules="[
+        val => val !== null && val !== ''
+      ]"
+      />
+      <q-input
+      v-model="formData.password"
+      :type="isPwd ? 'password' : 'text'"
+      label="Password"
+      class="input-textfield"
+      :rules="[
+        val => val !== null && val !== ''
+      ]"
       >
-      Sing up Free
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>
+      <q-btn
+      class="btn-big btn-round btn-yellow"
+      type="submit"
+      >
+      Continue
       </q-btn>
 
-      <q-btn
-      class="btn-big btn-round btn-facebook"
-      >
-      Continue with Facebook
-      </q-btn>
+      <q-item
+      class="btn-small">
+      Forgot your password?
+      </q-item>
 
-      <q-btn
-      class="btn-big btn-round"
-      to="/FeedFollowing"
-      >
-      Log in
-      </q-btn>
-
-    </div>
-
+    </q-form>
   </q-layout>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-  name: 'Login'
+  name: 'Login',
+  data () {
+    return {
+      isPwd: true,
+      formData: {
+        email: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    ...mapActions('login', ['loginAuth']),
+    submitForm() {
+      this.loginAuth(this.formData)
+    }
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '../css/palette';
+
+.btn-small{
+  margin-top: 3rem;
+  font-size: .8rem;
+  color: $accent;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-position: under;
+}
+</style>

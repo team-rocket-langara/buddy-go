@@ -42,6 +42,25 @@
       </template>
     </q-chat-message>
 
+    <q-chat-message
+    name="me"
+    stamp="00:00"
+    :text="['hi']"
+    sent
+    >
+      <template v-slot:avatar>
+        <q-avatar
+        size="52px"
+        class="chat-sent"
+        >
+          <q-img
+          src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+          :ratio="1"
+          />
+        </q-avatar>
+      </template>
+    </q-chat-message>
+
   </q-page>
 </template>
 
