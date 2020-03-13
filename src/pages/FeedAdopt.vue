@@ -1,5 +1,5 @@
 <template>
-  <q-page class="post-list adopt-page">
+  <q-page class="post-list adopt-page page">
 
     <div class="adopt-page-name">
       <p class="adopt-page-title">Be my buddy!</p>

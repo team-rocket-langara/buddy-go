@@ -38,7 +38,6 @@
       <!-- Q Toolbar -->
       <q-toolbar>
         <q-input
-        v-model="text"
         placeholder=""
         dense
         >

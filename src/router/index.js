@@ -26,6 +26,18 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
+
+  Router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const isAuthenticated = firebaseAuth.currentUser;
+    if (requiresAuth && !isAuthenticated) {
+      next("/");
+    } else if(!requiresAuth && isAuthenticated) {
+      next("/FeedFollowing")
+    } else {
+      next();
+    }
+  });
   
   return Router
 }

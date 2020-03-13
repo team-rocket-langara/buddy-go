@@ -40,20 +40,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 
 export default {
   name: 'Landig',
-  methods: {
-    ...mapActions('login', ['alreadyLogged']),
-    checkLogin(){
-      this.alreadyLogged()
-    }
-  },
-  mounted: function(){
-    this.$nextTick(function(){
-      this.checkLogin()
-    })
-  }
 }
 </script>

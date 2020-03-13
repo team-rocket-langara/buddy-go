@@ -23,7 +23,10 @@
 
     <!-- Q Page Container -->
     <q-page-container>
-      <router-view />
+      
+      <transition name="router-anim" enter-active-class="animated slideInLeft" leave-active-class="animated slideOutRight">  
+        <router-view />
+      </transition>
     </q-page-container>
     <!-- /Q Page Container -->
 

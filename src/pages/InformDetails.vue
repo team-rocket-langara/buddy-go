@@ -7,7 +7,7 @@
 
     <q-form
     class="login-form"
-    @submit="submitForm()"
+    @submit="submitDetails"
     >
 
       <q-input
@@ -38,6 +38,7 @@
       v-model="formData.birthday"
       label="Birthday"
       class="input-textfield"
+      type="date"
       />
 
       <q-input
@@ -49,6 +50,12 @@
       <q-input
       v-model="formData.toy"
       label="Favourite Toy"
+      class="input-textfield"
+      />
+
+      <q-input
+      v-model="formData.hometown"
+      label="Hometown"
       class="input-textfield"
       />
 
@@ -84,13 +91,14 @@ export default {
         birthday: '',
         food: '',
         toy: '',
-        bio: ''
+        bio: '',
+        hometown: ''
       }
     }
   },
   methods: {
-    ...mapActions('users', ['firstUpdate']),
-    submitForm(){
+    ...mapActions('user', ['firstUpdate']),
+    submitDetails(){
       this.firstUpdate(this.formData);
     }
   }
