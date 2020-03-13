@@ -1,79 +1,107 @@
 const routes = [
   {
     path: '/',
-    component: () => import('pages/Landing.vue')
+    component: () => import('pages/Landing.vue'),
+    meta: { requiresAuth: false }
   },
   {
     path: '/CreateAccount',
-    component: () => import('pages/CreateAccount.vue')
+    component: () => import('pages/CreateAccount.vue'),
+    meta: { requiresAuth: false }
   },
   {
     path: '/Login',
-    component: () => import('pages/Login.vue')
+    component: () => import('pages/Login.vue'),
+    meta: { requiresAuth: false }
   },
   {
     path: '/InformDetails',
-    component: () => import('pages/InformDetails.vue')
+    component: () => import('pages/InformDetails.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/FeedFollowing',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/FeedFollowing.vue') }
-    ]
+    ],
+    meta: { requiresAuth: true }
   },
   {
-    path: '/UserProfile',
+    path: '/UserProfile/:idUser',
     component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/UserProfile.vue') }
-    ]
+    children: [{ 
+      path: '',
+      component: () => import('pages/UserProfile.vue')
+    }],
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/EditProfile',
+    component: () => import('pages/EditProfile.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/Camera',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Camera.vue') }
-    ]
+    ],
+    meta: { requiresAuth: true }
   },
   {
     path: '/SinglePost',
     component: () => import('layouts/SinglePostLayout.vue'),
     children: [
       { path: '', component: () => import('pages/SinglePost.vue') }
-    ]
+    ],
+    meta: { requiresAuth: true }
   },
   {
-    path: '/AboutMe',
-    component: () => import('pages/AboutMe.vue')
+    path: '/AboutMe/:idUser',
+    component: () => import('pages/AboutMe.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/FeedAdopt',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/FeedAdopt.vue') }
-    ]
+    ],
+    meta: { requiresAuth: true }
   },
   {
     path: '/ChatList',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ChatList.vue') }
-    ]
+    ],
+    meta: { requiresAuth: true }
   },
   {
     path: '/AdoptProfile',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/AdoptProfile.vue') }
-    ]
+    ],
+    meta: { requiresAuth: true }
   },
   {
     path: '/ChatRoom',
     component: () => import('layouts/ChatRoomLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ChatRoom.vue') }
-    ]
+    ],
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/PreparePost/:picUrl',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ 
+      path: '',
+      component: () => import('pages/PreparePost.vue')
+    }],
+    meta: { requiresAuth: true }
   }
 ]
 

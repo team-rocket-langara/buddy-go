@@ -7,7 +7,7 @@
 
     <h1>Create your Account</h1>
 
-    <q-form    
+    <q-form
     @submit="submitForm()"
     class="login-form">
 
@@ -78,7 +78,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('users', ['registerUser']),
+    ...mapActions('user', ['registerUser']),
     submitForm() {
       if(this.formData.password === this.formData.confirm){
         this.registerUser(this.formData)

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="chat-list">
+  <q-page class="chat-list page">
     
     <!-- Chat List Search -->
     <q-input

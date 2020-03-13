@@ -5,7 +5,7 @@
     <q-item
     class="absolute-top btn-my-profile"
     clickable
-    to="/UserProfile"
+    @click="myProfile"
     >
       <!-- Drawer Avatar -->
       <q-avatar
@@ -23,7 +23,7 @@
 
       <!-- My Profile Btn Label -->
       <div class="btn-my-profile-label">
-        <p>Razvan Stoenescu</p>
+        <p>{{ userInfo.name }}</p>
         <p>View Profile</p>
       </div>
       <!-- /My Profile Btn Label -->
@@ -57,13 +57,27 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { firebaseAuth } from 'boot/firebase'
 
 export default {
   name: 'SideMenuContent',
+  data(){
+    return{
+      id: firebaseAuth.currentUser.uid
+    }
+  },
   methods: {
     ...mapActions('login', ['logOut']),
     logginOut() {
       this.logOut()
+    },
+    myProfile(){
+      this.$router.push({ path: '/UserProfile/' + this.id })
+    }
+  },
+  computed: {
+    userInfo(){
+      return this.$store.getters['user/getUserInfo']
     }
   }
 }

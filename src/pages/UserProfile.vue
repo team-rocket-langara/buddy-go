@@ -21,14 +21,14 @@
       <div class="user-profile-name">
         <q-item>
           <q-item-section>
-            <q-item-label overline>Charlie</q-item-label>
-            <q-item-label caption>000 Followers &bull; 000 Following</q-item-label>
+            <q-item-label overline> {{ userInfo.name }} </q-item-label>
+            <q-item-label caption>{{ followInfo.followers }} Followers &bull; {{ followInfo.following }} Following</q-item-label>
 
             <q-list>
 
               <q-item
               clickable
-              to="/AboutMe"
+              @click="aboutMe"
               class="btn-text"
               >
                 <q-item-label>
@@ -36,12 +36,13 @@
                 </q-item-label>
               </q-item>
 
-              &bull;
+              <i v-if="thisUser == this.$route.params.idUser">&bull;</i>
 
               <q-item
               clickable
-              to="/LINK-HERE"
+              to="/EditProfile"
               class="btn-text"
+              v-if="thisUser == this.$route.params.idUser"
               >
                 <q-item-label>
                   Edit Profile
@@ -62,6 +63,8 @@
     <div class="global-separator">
       <q-btn
       class="btn-small btn-purple btn-round"
+      v-if="thisUser !== this.$route.params.idUser"
+      @click="pressFollow"
       >
       Follow
       </q-btn>
@@ -86,7 +89,45 @@
 </template>
 
 <script>
+import VueRouter from 'vue-router'
+import { mapActions } from 'vuex'
+import { firebaseAuth } from 'boot/firebase'
+
 export default {
   name: 'UserProfile',
+  watch: {
+    $route(to, from) {
+      this.getInfo(to.params.idUser)
+    }
+  },
+  created(){
+    this.getInfo()
+  },
+  data(){
+    return{
+      thisUser: firebaseAuth.currentUser.uid
+    }
+  },
+  methods:{
+    ...mapActions('user', ['otherUser']),
+    ...mapActions('follow', ['startFollow']),
+    aboutMe(){
+      this.$router.push({ path: '/AboutMe/' + this.$route.params.idUser })
+    },
+    getInfo(){
+      this.otherUser(this.$route.params.idUser)
+    },
+    pressFollow(){
+      this.startFollow(this.$route.params.idUser)
+    }
+  },
+  computed: {
+    userInfo(){
+      return this.$store.getters['user/getOtherUserInfo']
+    },
+    followInfo(){
+      return this.$store.getters['follow/getOtherFollow']
+    }
+  }
 }
 </script>

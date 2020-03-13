@@ -1,5 +1,5 @@
 <template>
-  <q-page class="post-list">
+  <q-page class="post-list page">
 
     <!-- Post Item -->
     <div v-for="postItem in postItems" v-bind:key="postItem.id" class="post-list-item">
@@ -9,7 +9,7 @@
 
         <!-- Post Item Avatar -->
         <q-btn
-        to="/UserProfile"
+        :to="postItem.userId"
         :ripple="false"
         >
 
@@ -31,7 +31,7 @@
         <div class="post-list-info">
           <q-item
           clickable
-          to="/UserProfile"
+          :to="postItem.userId"
           >
             <q-item-section>
               <q-item-label overline>{{ postItem.postName }}</q-item-label>
@@ -54,7 +54,11 @@
       <q-img
       :src="postItem.postPicture"
       ratio="1"
-      />
+      >
+        <template v-slot:loading>
+          <q-spinner-gears color="black" />
+        </template>
+      </q-img>
       <!-- /Post Item Pic -->
 
       <!-- Post Item Btns -->
@@ -87,6 +91,9 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'FeedFollowing',
+  created(){
+    this.userInfoLogin()
+  },
   data() {
     return {
       postItems: [
@@ -97,7 +104,8 @@ export default {
           postTitle: "Hello, Buddies! Here I'm enjoying the summer. It would be great if you could be here with me!",
           postPicture: "https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
           postLike: '25',
-          postComments: '38'
+          postComments: '38',
+          userId: '/UserProfile/hs3zINskrtTJAc4JUVFzD3khFt13'
         },
         {
           postAvatar: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
@@ -106,15 +114,20 @@ export default {
           postTitle: "Happy vibes!",
           postPicture: "https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
           postLike: '12',
-          postComments: '25'
+          postComments: '25',
+          userId: '/UserProfile/tzAtcYs59QZnLu0ud5kBEeUsXh53'
         }
       ]
     }
   },
   methods: {
     ...mapActions('login', ['checkUser']),
+    ...mapActions('user', ['userInfo']),
     checkLogin(){
         this.checkUser()
+    },
+    userInfoLogin(){
+      this.userInfo()
     }
   }
 }
