@@ -26,14 +26,11 @@ export function loginAuth({}, payload){
 
 export function logOut(){
   firebaseAuth.signOut()
-  .then(
+  .then((response) => {
     this.$router.push({
       path: '/'
     })
-    .catch(function(error) {
-      
-    })
-  )
+  })
   .catch(function(error) {
     var errorCode = error.code;
     var errorMessage = error.message;

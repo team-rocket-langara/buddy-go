@@ -10,7 +10,7 @@
       >
 
         <q-img
-        src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+        :src="userAvatar"
         :ratio="1"
         />
 
@@ -91,6 +91,8 @@
 <script>
 import VueRouter from 'vue-router'
 import { mapActions } from 'vuex'
+import * as firebase from "firebase/app"
+import 'firebase/storage'
 import { firebaseAuth } from 'boot/firebase'
 
 export default {
@@ -102,10 +104,12 @@ export default {
   },
   created(){
     this.getInfo()
+    this.getAvatar()
   },
   data(){
     return{
-      thisUser: firebaseAuth.currentUser.uid
+      thisUser: firebaseAuth.currentUser.uid,
+      userAvatar: ''
     }
   },
   methods:{
@@ -119,6 +123,20 @@ export default {
     },
     pressFollow(){
       this.startFollow(this.$route.params.idUser)
+    },
+    getAvatar(){
+
+      // Create a root reference
+      var storageRef = firebase.storage().ref()
+
+      // Create a reference to 'images/mountains.jpg'
+      var mountainImagesRef = storageRef.child(`avatars/${this.$route.params.idUser}`)      
+
+      mountainImagesRef.getDownloadURL().then(url => {
+
+        this.userAvatar = url
+
+      })
     }
   },
   computed: {

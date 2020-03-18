@@ -2,14 +2,14 @@
   <q-page class="post-list page">
 
     <!-- Post Item -->
-    <div v-for="postItem in postItems" v-bind:key="postItem.id" class="post-list-item">
+    <div v-for="postItem in getPostList" v-bind:key="postItem.id" class="post-list-item">
 
       <!-- Post Header -->
       <header>
 
         <!-- Post Item Avatar -->
         <q-btn
-        :to="postItem.userId"
+        :to="postItem[2]"
         :ripple="false"
         >
 
@@ -18,7 +18,7 @@
           >
 
             <q-img
-            :src="postItem.postAvatar"
+            :src="postItem[7]"
             :ratio="1"
             />
 
@@ -31,11 +31,11 @@
         <div class="post-list-info">
           <q-item
           clickable
-          :to="postItem.userId"
+          :to="postItem[2]"
           >
             <q-item-section>
-              <q-item-label overline>{{ postItem.postName }}</q-item-label>
-              <q-item-label caption>{{ postItem.postCheckIn }}</q-item-label>
+              <q-item-label overline>{{ postItem[1] }}</q-item-label>
+              <q-item-label caption>{{ postItem[1] }}</q-item-label>
             </q-item-section>
           </q-item>
         </div>
@@ -46,13 +46,13 @@
 
       <!-- Post Item Title -->
       <div class="post-list-title">
-        <h1>{{ postItem.postTitle }}</h1>
+        <h1>{{ postItem[3] }}</h1>
       </div>
       <!-- /Post Item Title -->
 
       <!-- Post Item Pic -->
       <q-img
-      :src="postItem.postPicture"
+      :src="postItem[6]"
       ratio="1"
       >
         <template v-slot:loading>
@@ -69,14 +69,14 @@
         >
           <img src="../assets/layout/paw-icon.svg">
         </q-btn>
-        <p class="counter">{{ postItem.postLike }}</p>
+        <p class="counter">{{ postItem[5] }}</p>
         <q-btn
         class="btn-social"
-        to="/SinglePost"
+        :to="postItem[0]"
         >
           <img src="../assets/layout/comments-icon.svg">
         </q-btn>
-        <p class="counter">{{ postItem.postComments }}</p>
+        <p class="counter">10</p>
       </div>
       <!-- /Post Item Btns -->
 
@@ -88,36 +88,19 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
+import * as firebase from "firebase/app"
+import 'firebase/storage'
 
 export default {
   name: 'FeedFollowing',
   created(){
-    this.userInfoLogin()
+    this.userInfoLogin(),
+    this.genPostList()
   },
   data() {
     return {
-      postItems: [
-        {
-          postAvatar: 'https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-          postName: 'Charlie',
-          postCheckIn: 'Stanley Park',
-          postTitle: "Hello, Buddies! Here I'm enjoying the summer. It would be great if you could be here with me!",
-          postPicture: "https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-          postLike: '25',
-          postComments: '38',
-          userId: '/UserProfile/hs3zINskrtTJAc4JUVFzD3khFt13'
-        },
-        {
-          postAvatar: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-          postName: 'Lorie',
-          postCheckIn: 'Trout Lake Park',
-          postTitle: "Happy vibes!",
-          postPicture: "https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-          postLike: '12',
-          postComments: '25',
-          userId: '/UserProfile/tzAtcYs59QZnLu0ud5kBEeUsXh53'
-        }
-      ]
+      getPostList: []
     }
   },
   methods: {
@@ -128,6 +111,49 @@ export default {
     },
     userInfoLogin(){
       this.userInfo()
+    },
+    genPostList(){
+      firebaseDb.collection("posts-feed").orderBy('postTime', "desc").get()
+      .then((response) => {
+        response.docs.forEach(doc => {
+          firebaseDb.collection("users-info").doc(doc.data().postUser).get()
+          .then((newget) => {
+            var newArr = [];
+            var postUser = newget.data().name;
+            var postUserId = '/UserProfile/' + doc.data().postUser;
+            var postId = '/SinglePost/' + doc.id;
+            var postCap = doc.data().postCaption;
+            var postDate = doc.data().postDay;
+            var postLike = doc.data().postLike;
+            var postPic = doc.data().postPic;
+
+            newArr.push(postId, postUser, postUserId, postCap, postDate, postLike);
+
+            var storageRef = firebase.storage().ref()
+            var avatarImgRef = storageRef.child(`avatars/${doc.data().postUser}`)
+            var postImgRef = storageRef.child(`posts/${doc.data().postPic}`)      
+
+            avatarImgRef.getDownloadURL()
+            .then(avatarUrl => {
+
+              newArr.push(avatarUrl)                           
+
+            })
+            .then(
+              postImgRef.getDownloadURL()
+              .then(postUrl => {
+
+                newArr.push(postUrl)
+
+              })
+            )
+
+            console.log(newArr)
+
+            this.getPostList.push(newArr)
+          })
+        })
+      })
     }
   }
 }

@@ -20,10 +20,23 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/UpdatePicture',
+    component: () => import('pages/UpdatePicture.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/FeedFollowing',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/FeedFollowing.vue') }
+    ],
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/Map',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Map.vue') }
     ],
     meta: { requiresAuth: true }
   },
@@ -50,7 +63,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/SinglePost',
+    path: '/SinglePost/:postId',
     component: () => import('layouts/SinglePostLayout.vue'),
     children: [
       { path: '', component: () => import('pages/SinglePost.vue') }
@@ -95,8 +108,8 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/PreparePost/:picUrl',
-    component: () => import('layouts/MainLayout.vue'),
+    path: '/PreparePost/:picId/:picStore/:picEmu/:picN/:picPic/:picName',
+    component: () => import('layouts/PostLayout.vue'),
     children: [{ 
       path: '',
       component: () => import('pages/PreparePost.vue')

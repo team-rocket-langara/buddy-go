@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import user from './user'
 import login from './login'
 import follow from './follow'
+import post from './post'
 
 Vue.use(Vuex)
 
@@ -22,7 +23,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       user,
       login,
-      follow
+      follow,
+      post
     },
 
     // enable strict mode (adds overhead!)

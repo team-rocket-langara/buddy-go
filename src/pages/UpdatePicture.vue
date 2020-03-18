@@ -1,46 +1,76 @@
 <template>
-  <q-page>
+  <q-layout class="picture-profile">
 
-    <!-- Picture Tiles -->
-    <div class="picture-tiles-wrapper">
+    <div class="picture-profile-top">
+      <div class="border">
+        <q-img
+        :src="imageSrc"
+        ratio="1"
+        placeholder-src="https://cdn.shopify.com/s/assets/no-image-2048-5e88c1b20e087fb7bbe9a3771824e743c244f437e4f8ba93bbf7b11b53f7824c.gif"
+        >
+        </q-img>
+      </div>
+    </div>
+
+    <h2>Chose a profile photo</h2>
+
+    <q-scroll-area>
       <q-btn
       class="btn-picture"
       v-for="imgItem in imgThumb" v-bind:key="imgItem.id"
-      @click="goTo(imgItem.id)"
+      @click="changeTop(imgItem.photoURL, imgItem.id)"
       >
-        <!-- :src="imgItem.thumbnailURL" -->
+
         <q-img
         :src="imgItem.thumbnailURL"
         :ratio="1"
         />
-      </q-btn>
-    </div>
-    <!-- /Picture Tiles -->
 
-    <!-- Camera Btn -->
-    <div class="camera-btn-area">
+      </q-btn>
+    </q-scroll-area>
+
+    <div class="picture-profile-bottom">
+
       <q-btn
-      class="btn-picture btn-yellow"
+      class="btn-round btn-purple"
       @click="openCamera"
       >
-      <q-icon name="camera_enhance" />
+        <q-icon
+        name="camera_enhance"
+        />
       </q-btn>
+
+      <q-btn
+      class="btn-round btn-purple"
+      @click="picUpload"
+      :disable="!imageSrc"
+      >
+        <q-icon
+        name="arrow_forward"
+        />
+      </q-btn>
+
     </div>
-    <!-- /Camera Btn -->
-    
-  </q-page>
+
+  </q-layout>
 </template>
 
 <script>
+import * as firebase from "firebase/app"
+import 'firebase/storage'
+import { firebaseAuth } from 'boot/firebase'
+import VueRouter from 'vue-router'
+
 export default {
-  name: 'Camera',
+  name: 'UpdatePicture',
   watch: {
     imgThumb: "accessLib"
   },
   data () {
     return {
       imageSrc: '',
-      imgThumb: ''
+      imgThumb: '',
+      fileToUse: ''
     }
   },
   methods: {
@@ -68,6 +98,27 @@ export default {
         }
       );
     },
+
+    changeTop(photoUrl, idPhoto){
+      this.imageSrc = photoUrl
+
+      cordova.plugins.photoLibrary.getPhoto(
+        idPhoto, // or libraryItem.id
+        (fullPhotoBlob) => {
+
+          var reader = new FileReader()
+
+          reader.onloadend = e => {
+            this.fileToUse = e.currentTarget.result
+          }
+          
+          reader.readAsDataURL(fullPhotoBlob)
+        },
+        function (err) {
+            console.log('Error occured')
+      });
+    },
+
     openCamera(){
 
       var camOpt = {
@@ -109,36 +160,32 @@ export default {
       console.log(err)
     },
 
-    goTo(photoId){
-      var str = photoId
-      var res = str.replace(";", "X")
-      this.$router.push({path: '/PreparePost/' + res})
+    picUpload(){
+      var myId = firebaseAuth.currentUser.uid
+
+      // Create a root reference
+      var storageRef = firebase.storage().ref()
+
+      // Create a reference to 'images/mountains.jpg'
+      var mountainImagesRef = storageRef.child(`avatars/${myId}`)
+
+      // Data URL string
+      var message = this.fileToUse
+
+      mountainImagesRef.putString(message, 'data_url').then(snapshot => {
+        
+        console.log('Uploaded a data_url string! ' + myId)
+        this.$router.push({ path: '/FeedFollowing' })
+        .catch(err => {
+          console.log(err)
+        })
+
+      })
     }
+
   },
   mounted(){
     this.accessLib()
   }
 }
 </script>
-
-<style lang="scss">
-.picture-tiles-wrapper{
-  margin-bottom: 85px;
-}
-
-.camera-btn-area{
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-
-  .btn-picture{
-    height: 70px;
-    width: 70px;
-    border-radius: 100%;
-    font-size: 1.3rem;
-  }
-}
-</style>

@@ -47,6 +47,12 @@
       Forgot your password?
       </q-item>
 
+      <q-item
+      class="btn-small last"
+      to="/CreateAccount">
+      Create account
+      </q-item>
+
     </q-form>
   </q-layout>
 </template>
@@ -84,5 +90,9 @@ export default {
   font-weight: 500;
   text-decoration: underline;
   text-underline-position: under;
+}
+
+.last{
+  margin-top: 0 !important;
 }
 </style>

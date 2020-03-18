@@ -9,6 +9,7 @@ export default function () {
       toy: '',
       bio: '',
       hometown: '',
+      avatar: ''
     },
     otherUser: {
       name: '',
@@ -19,6 +20,7 @@ export default function () {
       toy: '',
       bio: '',
       hometown: '',
+      avatar: ''
     }
   }
 }
