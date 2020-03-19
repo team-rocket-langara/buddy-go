@@ -76,7 +76,7 @@ export function userInfo({ commit }){
                     toy: doc.data().toy,
                     bio: doc.data().bio,
                     hometown: doc.data().hometown,
-                    avatar: currentUser.photoUrl
+                    avatar: doc.data().avatar
                 }               
 
                 commit('setUserInfo', userInfos)
@@ -143,7 +143,7 @@ export function otherUser({commit}, data){
                 toy: doc.data().toy,
                 bio: doc.data().bio,
                 hometown: doc.data().hometown,
-                avatar: data
+                avatar: doc.data().avatar
             }
 
             commit('setOtherUserInfo', userInfos)

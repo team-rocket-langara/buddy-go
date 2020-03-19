@@ -61,7 +61,7 @@
 import { mapActions } from 'vuex'
 import * as firebase from "firebase/app"
 import 'firebase/storage'
-import { firebaseAuth } from 'boot/firebase'
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
 
 export default {
   name: 'SideMenuContent',
@@ -87,17 +87,22 @@ export default {
     },
     myAvatar(){
 
-      // Create a root reference
-      var storageRef = firebase.storage().ref()
-
-      // Create a reference to 'images/mountains.jpg'
-      var mountainImagesRef = storageRef.child(`avatars/${this.id}`)      
-
-      mountainImagesRef.getDownloadURL().then(url => {
-
-        this.myPic = url
-
+      firebaseDb.collection("users-info").doc(this.id).get()
+      .then((newget) => {
+        this.myPic = newget.data().avatar
       })
+
+      // // Create a root reference
+      // var storageRef = firebase.storage().ref()
+
+      // // Create a reference to 'images/mountains.jpg'
+      // var mountainImagesRef = storageRef.child(`avatars/${this.id}`)      
+
+      // mountainImagesRef.getDownloadURL().then(url => {
+
+      //   this.myPic = url
+
+      // })
     }
   },
   computed: {

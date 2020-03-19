@@ -64,7 +64,7 @@ export default {
 
       var res = picGen.replace("X", ";")
 
-      console.log(res)
+      // console.log(res)
 
       cordova.plugins.photoLibrary.getPhoto(
         res, // or libraryItem.id

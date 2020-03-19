@@ -41,10 +41,13 @@
         v-model="text"
         placeholder=""
         dense
+        maxlength="150"
         >
         </q-input>
         <q-btn
         class="btn-send"
+        @click="sendComment"
+        :disable="!text"
         >
           <img src="../assets/layout/send-icon.svg">
         </q-btn>
@@ -59,6 +62,8 @@
 
 <script>
 import SideMenuContent from 'components/SideMenuContent'
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
+import VueRouter from 'vue-router'
 
 export default {
   name: 'SinglePostLayout',
@@ -67,7 +72,23 @@ export default {
   },
   data () {
     return {
-      right: false
+      right: false,
+      text: ''
+    }
+  },
+  methods:{
+    sendComment(){
+
+      // console.log(this.$route.params.postId)
+      
+      firebaseDb.collection("posts-comments").doc(this.$route.params.postId).collection('comments').add({
+        user: firebaseAuth.currentUser.uid,
+        comment: this.text,
+        date: new Date().toDateString(),
+        time: new Date()
+      })
+
+      this.text = ''
     }
   }
 }

@@ -70,6 +70,7 @@
           <img src="../assets/layout/paw-icon.svg">
         </q-btn>
         <p class="counter">{{ postItem[5] }}</p>
+
         <q-btn
         class="btn-social"
         :to="postItem[0]"
@@ -118,37 +119,41 @@ export default {
         response.docs.forEach(doc => {
           firebaseDb.collection("users-info").doc(doc.data().postUser).get()
           .then((newget) => {
-            var newArr = [];
-            var postUser = newget.data().name;
-            var postUserId = '/UserProfile/' + doc.data().postUser;
-            var postId = '/SinglePost/' + doc.id;
-            var postCap = doc.data().postCaption;
-            var postDate = doc.data().postDay;
-            var postLike = doc.data().postLike;
-            var postPic = doc.data().postPic;
+            var newArr = []
+            var run = false
+            var postUser = newget.data().name
+            var postUserId = '/UserProfile/' + doc.data().postUser
+            var postId = '/SinglePost/' + doc.id
+            var postCap = doc.data().postCaption
+            var postDate = doc.data().postDay
+            var postLike = doc.data().postLike
+            var postPic = doc.data().postPic
+            var userAvatar = newget.data().avatar
 
-            newArr.push(postId, postUser, postUserId, postCap, postDate, postLike);
+            newArr.push(postId, postUser, postUserId, postCap, postDate, postLike, postPic, userAvatar);
 
-            var storageRef = firebase.storage().ref()
-            var avatarImgRef = storageRef.child(`avatars/${doc.data().postUser}`)
-            var postImgRef = storageRef.child(`posts/${doc.data().postPic}`)      
+            // var storageRef = firebase.storage().ref()
+            // var avatarImgRef = storageRef.child(`avatars/${doc.data().postUser}`)
+            // var postImgRef = storageRef.child(`posts/${doc.data().postPic}`)      
 
-            avatarImgRef.getDownloadURL()
-            .then(avatarUrl => {
+            // avatarImgRef.getDownloadURL()
+            // .then(avatarUrl => {
 
-              newArr.push(avatarUrl)                           
+            //   newArr.push(avatarUrl)
+            //   run = true
 
-            })
-            .then(
-              postImgRef.getDownloadURL()
-              .then(postUrl => {
+            //   if(run){
+            //     postImgRef.getDownloadURL()
+            //     .then(postUrl => {
 
-                newArr.push(postUrl)
+            //       newArr.push(postUrl)
 
-              })
-            )
+            //     })
+            //   }
 
-            console.log(newArr)
+            // })
+
+            // console.log(newArr)
 
             this.getPostList.push(newArr)
           })

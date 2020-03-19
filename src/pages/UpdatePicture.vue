@@ -58,7 +58,7 @@
 <script>
 import * as firebase from "firebase/app"
 import 'firebase/storage'
-import { firebaseAuth } from 'boot/firebase'
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
 import VueRouter from 'vue-router'
 
 export default {
@@ -161,26 +161,39 @@ export default {
     },
 
     picUpload(){
-      var myId = firebaseAuth.currentUser.uid
 
-      // Create a root reference
-      var storageRef = firebase.storage().ref()
+      let currentUser = firebaseAuth.currentUser.uid;
 
-      // Create a reference to 'images/mountains.jpg'
-      var mountainImagesRef = storageRef.child(`avatars/${myId}`)
-
-      // Data URL string
-      var message = this.fileToUse
-
-      mountainImagesRef.putString(message, 'data_url').then(snapshot => {
-        
-        console.log('Uploaded a data_url string! ' + myId)
-        this.$router.push({ path: '/FeedFollowing' })
-        .catch(err => {
-          console.log(err)
+      if (currentUser) {
+        // Update document in collection "users-info"
+        firebaseDb.collection("users-info").doc(currentUser).update({
+          avatar: this.fileToUse
         })
+        .catch(function(error) {
+            console.error("Error updating document: ", error);
+        })
+      }
 
-      })
+      // var myId = firebaseAuth.currentUser.uid
+
+      // // Create a root reference
+      // var storageRef = firebase.storage().ref()
+
+      // // Create a reference to 'images/mountains.jpg'
+      // var mountainImagesRef = storageRef.child(`avatars/${myId}`)
+
+      // // Data URL string
+      // var message = this.fileToUse
+
+      // mountainImagesRef.putString(message, 'data_url').then(snapshot => {
+        
+      //   console.log('Uploaded a data_url string! ' + myId)
+      //   this.$router.push({ path: '/FeedFollowing' })
+      //   .catch(err => {
+      //     console.log(err)
+      //   })
+
+      // })
     }
 
   },

@@ -10,7 +10,7 @@
       >
 
         <q-img
-        :src="userAvatar"
+        :src="userInfo.avatar"
         :ratio="1"
         />
 
@@ -75,10 +75,11 @@
     <div class="picture-tiles-wrapper">
       <q-btn
       class="btn-picture"
-      to="/SinglePost"
+      :to="postItem[0]"
+      v-for="postItem in allPosts" v-bind:key="postItem.id"
       >
         <q-img
-        src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+        :src="postItem[1]"
         :ratio="1"
         />
       </q-btn>
@@ -91,9 +92,9 @@
 <script>
 import VueRouter from 'vue-router'
 import { mapActions } from 'vuex'
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
 import * as firebase from "firebase/app"
 import 'firebase/storage'
-import { firebaseAuth } from 'boot/firebase'
 
 export default {
   name: 'UserProfile',
@@ -104,12 +105,13 @@ export default {
   },
   created(){
     this.getInfo()
-    this.getAvatar()
+    this.getAllPosts()
   },
   data(){
     return{
       thisUser: firebaseAuth.currentUser.uid,
-      userAvatar: ''
+      userAvatar: '',
+      allPosts: []
     }
   },
   methods:{
@@ -124,18 +126,22 @@ export default {
     pressFollow(){
       this.startFollow(this.$route.params.idUser)
     },
-    getAvatar(){
+    getAllPosts(){
+      firebaseDb.collection("posts-feed")
+      .where("postUser", "==", this.$route.params.idUser)
+      .orderBy("postTime", "desc")
+      .get()
+      .then((response) => {
+        response.docs.forEach(doc => {
+          var newArr = []
+          var postId = '/SinglePost/' + doc.id
+          var postPic = doc.data().postPic
 
-      // Create a root reference
-      var storageRef = firebase.storage().ref()
-
-      // Create a reference to 'images/mountains.jpg'
-      var mountainImagesRef = storageRef.child(`avatars/${this.$route.params.idUser}`)      
-
-      mountainImagesRef.getDownloadURL().then(url => {
-
-        this.userAvatar = url
-
+          newArr.push(postId, postPic)
+          
+          // console.log(newArr)
+          this.allPosts.push(newArr)
+        })
       })
     }
   },

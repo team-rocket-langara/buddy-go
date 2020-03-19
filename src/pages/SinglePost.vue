@@ -18,7 +18,7 @@
           >
 
             <q-img
-            src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+            :src="postInfo[0][6]"
             :ratio="1"
             />
 
@@ -31,11 +31,11 @@
         <div class="post-list-info">
           <q-item
           clickable
-          to="/UserProfile"
+          :to="postInfo[0][1]"
           >
             <q-item-section>
-              <q-item-label overline>Charlie</q-item-label>
-              <q-item-label caption>Stanley Park</q-item-label>
+              <q-item-label overline>{{ postInfo[0][0] }}</q-item-label>
+              <q-item-label caption>{{ postInfo[0][0] }}</q-item-label>
             </q-item-section>
           </q-item>
         </div>
@@ -46,13 +46,13 @@
 
       <!-- Post Item Title -->
       <div class="post-list-title">
-        <h1>Hello, Buddies! Here I'm enjoying the summer. It would be great if you could be here with me!</h1>
+        <h1>{{ postInfo[0][2] }}</h1>
       </div>
       <!-- /Post Item Title -->
 
       <!-- Post Item Pic -->
       <q-img
-      src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+      :src="postInfo[0][5]"
       ratio="1"
       />
       <!-- /Post Item Pic -->
@@ -61,25 +61,21 @@
       <div class="post-list-social">
         <q-btn
         class="btn-social"
+        @click="genHtml('a')"
         >
           <img src="../assets/layout/paw-icon.svg">
         </q-btn>
-        <p class="counter">00</p>
+        <p class="counter">{{ postInfo[0][4] }}</p>
       </div>
       <!-- /Post Item Btns -->
 
       <!-- Post Item Comments -->
       <div class="post-list-comments-wrapper">
         <ul>
-          <li>
-            <span class="name">Charlie:</span> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae repellat blanditiis tenetur esse, pariatur asperiores similique repellendus, quidem doloremque praesentium maxime molestias!
+          <li v-for="comment in comments" v-bind:key="comment.id">
+            <span class="name">{{ comment[2] }}: </span>{{ comment[0] }}
             <br>
-            <span class="date">Aug 1, 2020 00:00</span>
-          </li>
-          <li>
-            <span class="name">Charlie:</span> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae repellat blanditiis tenetur esse, pariatur asperiores similique repellendus, quidem doloremque praesentium maxime molestias!
-            <br>
-            <span class="date">Aug 1, 2020 00:00</span>
+            <span class="date">{{ comment[1] }}</span>
           </li>
         </ul>
       </div>
@@ -92,7 +88,78 @@
 </template>
 
 <script>
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
+import VueRouter from 'vue-router'
+
 export default {
   name: 'SinglePost',
+  created() {
+    this.getPostInfo()
+  },
+  data(){
+    return {
+      postInfo: [],
+      comments: []
+    }
+  },
+  methods: {
+    getPostInfo(){
+      firebaseDb.collection("posts-feed").doc(this.$route.params.postId).get()
+      .then((response) => {
+
+        if(response.exists){
+
+          firebaseDb.collection("users-info").doc(response.data().postUser).get()
+          .then((newget) => {
+            var newArr = []
+            var postUser = newget.data().name
+            var postUserId = '/UserProfile/' + response.data().postUser
+            var postCap = response.data().postCaption
+            var postDate = response.data().postDay
+            var postLike = response.data().postLike
+            var postPic = response.data().postPic
+            var userAvatar = newget.data().avatar
+
+            newArr.push(postUser, postUserId, postCap, postDate, postLike, postPic, userAvatar);
+
+            this.postInfo.push(newArr)
+
+            // console.log(this.postInfo)
+          })
+        } else {
+          console.log('Error')
+        }
+      })
+    },
+    getComments(){
+      firebaseDb.collection('posts-comments').doc(this.$route.params.postId).collection('comments').orderBy('time').onSnapshot(snapshot => {
+        let changes = snapshot.docChanges();
+        changes.forEach(change => {
+          if(change.type == 'added'){
+            let newArr = []
+            let comment = change.doc.data().comment
+            let dateComment = change.doc.data().date
+
+            // console.log(change.doc.data())
+            newArr.push(comment, dateComment)
+            
+            firebaseDb.collection('users-info').doc(change.doc.data().user).get()
+            .then(response => {
+              let userName = response.data().name
+              newArr.push(userName)
+            })
+            
+            this.comments.push(newArr)
+            // console.log(this.comments)
+          } else if(change.type == 'removed'){
+            this.comments = []
+          }
+        })
+      })
+    }
+  },
+  mounted(){    
+    this.getComments()
+  }
 }
 </script>
