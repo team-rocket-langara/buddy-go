@@ -35,7 +35,8 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-photo-library": {
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "To choose photos"
-      }
+      },
+      "cordova-plugin-file": {}
     },
     "platforms": [
       "android"

@@ -6,7 +6,7 @@
     </q-btn>
 
     <q-img
-    src="https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+    :src="userInfo.avatar"
     :ratio="1" 
     />
 

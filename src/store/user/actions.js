@@ -34,7 +34,8 @@ export function firstUpdate({}, data){
             food: data.food,
             toy: data.toy,
             bio: data.bio,
-            hometown: data.hometown
+            hometown: data.hometown,
+            avatar: ''
         })
         .catch(function(error) {
             console.error("Error writing document: ", error);
@@ -42,7 +43,7 @@ export function firstUpdate({}, data){
     )
     .then(
         this.$router.push({
-            path: '/FeedFollowing'
+            path: '/UpdatePicture'
         })
         .catch(function(error) {
             var errorCode = error.code;
@@ -74,7 +75,8 @@ export function userInfo({ commit }){
                     food: doc.data().food,
                     toy: doc.data().toy,
                     bio: doc.data().bio,
-                    hometown: doc.data().hometown
+                    hometown: doc.data().hometown,
+                    avatar: doc.data().avatar
                 }               
 
                 commit('setUserInfo', userInfos)
@@ -90,41 +92,41 @@ export function userInfo({ commit }){
     } else {
         console.log('No user detected')
     }
-  }
+}
 
 export function updateUser({}, data){
-let currentUser = firebaseAuth.currentUser;
+    let currentUser = firebaseAuth.currentUser;
 
-if (currentUser) {
+    if (currentUser) {
 
-    currentUser.updateProfile({
-        displayName: data.name
-    })
-    .then(
-        // Update document in collection "users-info"
-        firebaseDb.collection("users-info").doc(currentUser.uid).update({
-            name: data.name,
-            breed: data.breed,
-            gender: data.gender,
-            birthday: data.birthday,
-            food: data.food,
-            toy: data.toy,
-            bio: data.bio,
-            hometown: data.hometown
+        currentUser.updateProfile({
+            displayName: data.name
         })
-        .catch(function(error) {
-            console.error("Error updating document: ", error);
-        })
-        .catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(`Code: ${errorCode} -- ${errorMessage}`);
-        })
-    )
+        .then(
+            // Update document in collection "users-info"
+            firebaseDb.collection("users-info").doc(currentUser.uid).update({
+                name: data.name,
+                breed: data.breed,
+                gender: data.gender,
+                birthday: data.birthday,
+                food: data.food,
+                toy: data.toy,
+                bio: data.bio,
+                hometown: data.hometown
+            })
+            .catch(function(error) {
+                console.error("Error updating document: ", error);
+            })
+            .catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                console.log(`Code: ${errorCode} -- ${errorMessage}`);
+            })
+        )
 
-} else {
-    console.log('No user detected')
-}
+    } else {
+        console.log('No user detected')
+    }
 }
 
 export function otherUser({commit}, data){
@@ -140,7 +142,8 @@ export function otherUser({commit}, data){
                 food: doc.data().food,
                 toy: doc.data().toy,
                 bio: doc.data().bio,
-                hometown: doc.data().hometown
+                hometown: doc.data().hometown,
+                avatar: doc.data().avatar
             }
 
             commit('setOtherUserInfo', userInfos)

@@ -14,7 +14,7 @@
       >
 
         <q-img
-        src="https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+        :src="myPic"
         :ratio="1"
         />
 
@@ -34,7 +34,9 @@
     <!-- Drawer List Menu -->
     <q-list>
 
-      <q-item>
+      <q-item
+      clickable
+      to="/UpdatePicture">
         <q-item-label>
           Account
         </q-item-label>
@@ -57,13 +59,22 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { firebaseAuth } from 'boot/firebase'
+import * as firebase from "firebase/app"
+import 'firebase/storage'
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
 
 export default {
   name: 'SideMenuContent',
+  watch:{
+    myPic: "myAvatar"
+  },
+  created(){
+    this.myAvatar()
+  },
   data(){
     return{
-      id: firebaseAuth.currentUser.uid
+      id: firebaseAuth.currentUser.uid,
+      myPic: ''
     }
   },
   methods: {
@@ -73,6 +84,25 @@ export default {
     },
     myProfile(){
       this.$router.push({ path: '/UserProfile/' + this.id })
+    },
+    myAvatar(){
+
+      firebaseDb.collection("users-info").doc(this.id).get()
+      .then((newget) => {
+        this.myPic = newget.data().avatar
+      })
+
+      // // Create a root reference
+      // var storageRef = firebase.storage().ref()
+
+      // // Create a reference to 'images/mountains.jpg'
+      // var mountainImagesRef = storageRef.child(`avatars/${this.id}`)      
+
+      // mountainImagesRef.getDownloadURL().then(url => {
+
+      //   this.myPic = url
+
+      // })
     }
   },
   computed: {

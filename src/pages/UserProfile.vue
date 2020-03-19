@@ -10,7 +10,7 @@
       >
 
         <q-img
-        src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+        :src="userInfo.avatar"
         :ratio="1"
         />
 
@@ -75,10 +75,11 @@
     <div class="picture-tiles-wrapper">
       <q-btn
       class="btn-picture"
-      to="/SinglePost"
+      :to="postItem[0]"
+      v-for="postItem in allPosts" v-bind:key="postItem.id"
       >
         <q-img
-        src="https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+        :src="postItem[1]"
         :ratio="1"
         />
       </q-btn>
@@ -91,7 +92,9 @@
 <script>
 import VueRouter from 'vue-router'
 import { mapActions } from 'vuex'
-import { firebaseAuth } from 'boot/firebase'
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
+import * as firebase from "firebase/app"
+import 'firebase/storage'
 
 export default {
   name: 'UserProfile',
@@ -102,10 +105,13 @@ export default {
   },
   created(){
     this.getInfo()
+    this.getAllPosts()
   },
   data(){
     return{
-      thisUser: firebaseAuth.currentUser.uid
+      thisUser: firebaseAuth.currentUser.uid,
+      userAvatar: '',
+      allPosts: []
     }
   },
   methods:{
@@ -119,6 +125,24 @@ export default {
     },
     pressFollow(){
       this.startFollow(this.$route.params.idUser)
+    },
+    getAllPosts(){
+      firebaseDb.collection("posts-feed")
+      .where("postUser", "==", this.$route.params.idUser)
+      .orderBy("postTime", "desc")
+      .get()
+      .then((response) => {
+        response.docs.forEach(doc => {
+          var newArr = []
+          var postId = '/SinglePost/' + doc.id
+          var postPic = doc.data().postPic
+
+          newArr.push(postId, postPic)
+          
+          // console.log(newArr)
+          this.allPosts.push(newArr)
+        })
+      })
     }
   },
   computed: {
