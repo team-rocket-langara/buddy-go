@@ -64,6 +64,7 @@
 import SideMenuContent from 'components/SideMenuContent'
 import { firebaseAuth, firebaseDb } from 'boot/firebase'
 import VueRouter from 'vue-router'
+import * as firebase from "firebase/app"
 
 export default {
   name: 'SinglePostLayout',
@@ -86,6 +87,14 @@ export default {
         comment: this.text,
         date: new Date().toDateString(),
         time: new Date()
+      })
+      .then(res => {
+        firebaseDb.collection("posts-feed").doc(this.$route.params.postId).update({
+          postComment: firebase.firestore.FieldValue.increment(1)
+        })
+      })
+      .catch(err => {
+        console.log(err)
       })
 
       this.text = ''

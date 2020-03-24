@@ -18,7 +18,7 @@
           >
 
             <q-img
-            :src="postInfo[0][6]"
+            :src="postInfo.userAvatar"
             :ratio="1"
             />
 
@@ -31,11 +31,11 @@
         <div class="post-list-info">
           <q-item
           clickable
-          :to="postInfo[0][1]"
+          :to="postInfo.postUserUrl"
           >
             <q-item-section>
-              <q-item-label overline>{{ postInfo[0][0] }}</q-item-label>
-              <q-item-label caption>{{ postInfo[0][0] }}</q-item-label>
+              <q-item-label overline>{{ postInfo.postUser }}</q-item-label>
+              <q-item-label caption>{{ postInfo.postLocation }}</q-item-label>
             </q-item-section>
           </q-item>
         </div>
@@ -46,13 +46,13 @@
 
       <!-- Post Item Title -->
       <div class="post-list-title">
-        <h1>{{ postInfo[0][2] }}</h1>
+        <h1>{{ postInfo.postCap }}</h1>
       </div>
       <!-- /Post Item Title -->
 
       <!-- Post Item Pic -->
       <q-img
-      :src="postInfo[0][5]"
+      :src="postInfo.postPic"
       ratio="1"
       />
       <!-- /Post Item Pic -->
@@ -65,7 +65,8 @@
         >
           <img src="../assets/layout/paw-icon.svg">
         </q-btn>
-        <p class="counter">{{ postInfo[0][4] }}</p>
+        <p class="counter">{{ postInfo.postLike }}</p>
+        <span>{{ postInfo.postDate }}</span>
       </div>
       <!-- /Post Item Btns -->
 
@@ -90,6 +91,8 @@
 <script>
 import { firebaseAuth, firebaseDb } from 'boot/firebase'
 import VueRouter from 'vue-router'
+import * as firebase from "firebase/app"
+import 'firebase/storage'
 
 export default {
   name: 'SinglePost',
@@ -98,7 +101,7 @@ export default {
   },
   data(){
     return {
-      postInfo: [],
+      postInfo: {},
       comments: []
     }
   },
@@ -111,18 +114,49 @@ export default {
 
           firebaseDb.collection("users-info").doc(response.data().postUser).get()
           .then((newget) => {
-            var newArr = []
-            var postUser = newget.data().name
-            var postUserId = '/UserProfile/' + response.data().postUser
-            var postCap = response.data().postCaption
-            var postDate = response.data().postDay
-            var postLike = response.data().postLike
-            var postPic = response.data().postPic
-            var userAvatar = newget.data().avatar
+            var newArr = {}
+            newArr.postUser = newget.data().name
+            newArr.postUserUrl = '/UserProfile/' + response.data().postUser
+            newArr.postCap = response.data().postCaption
+            newArr.postDate = response.data().postDate
+            newArr.postLike = response.data().postLike
+            newArr.postLocation = response.data().postLocation
+            // ! FOR DEV
+            // newArr.postPic = response.data().postPic
+            // ! FOR DEV
+            // newArr.userAvatar = newget.data().avatar
 
-            newArr.push(postUser, postUserId, postCap, postDate, postLike, postPic, userAvatar);
+            // !FOR REAL WORLD BEGIN
+            var storageRef = firebase.storage().ref()
+            var avatarImagesRef = storageRef.child(`avatars/${response.data().postUser}`)      
 
-            this.postInfo.push(newArr)
+            avatarImagesRef.getDownloadURL().then(url => {
+
+              newArr.userAvatar = url
+
+            })
+            .then(resp => {
+              var postsImagesRef = storageRef.child(`posts/${this.$route.params.postId}`)      
+
+              postsImagesRef.getDownloadURL().then(url => {
+
+                newArr.postPic = url
+
+              })
+              .then(resp => {
+                this.postInfo = Object.assign(newArr)
+              })
+              .catch(err => {
+                console.log(err)
+              })
+            })
+            .catch(err => {
+              console.log(err)
+            })
+            // !FOR REAL WORLD END
+
+             // ! FOR DEV
+            // this.postInfo = Object.assign(newArr)
 
             // console.log(this.postInfo)
           })
@@ -148,8 +182,9 @@ export default {
               let userName = response.data().name
               newArr.push(userName)
             })
-            
-            this.comments.push(newArr)
+            .then(response => {            
+              this.comments.push(newArr)
+            })
             // console.log(this.comments)
           } else if(change.type == 'removed'){
             this.comments = []

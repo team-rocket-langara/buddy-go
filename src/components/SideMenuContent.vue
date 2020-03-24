@@ -16,6 +16,7 @@
         <q-img
         :src="myPic"
         :ratio="1"
+        placeholder-src="../assets/layout/placeholder_01.png"
         />
 
       </q-avatar>
@@ -87,22 +88,22 @@ export default {
     },
     myAvatar(){
 
-      firebaseDb.collection("users-info").doc(this.id).get()
-      .then((newget) => {
-        this.myPic = newget.data().avatar
-      })
-
-      // // Create a root reference
-      // var storageRef = firebase.storage().ref()
-
-      // // Create a reference to 'images/mountains.jpg'
-      // var mountainImagesRef = storageRef.child(`avatars/${this.id}`)      
-
-      // mountainImagesRef.getDownloadURL().then(url => {
-
-      //   this.myPic = url
-
+      // firebaseDb.collection("users-info").doc(this.id).get()
+      // .then((newget) => {
+      //   this.myPic = newget.data().avatar
       // })
+      
+      var storageRef = firebase.storage().ref()
+      var avatarImagesRef = storageRef.child(`avatars/${firebaseAuth.currentUser.uid}`)      
+
+      avatarImagesRef.getDownloadURL().then(url => {
+
+        this.myPic = url
+
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   },
   computed: {

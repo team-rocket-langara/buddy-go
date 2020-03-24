@@ -4,8 +4,9 @@
     <div class="prepare-post-display">
 
       <q-img
-      :src="sendInfo.picture"
+      :src="picture"
       :ratio="1"
+      placeholder-src="../assets/layout/placeholder_01.png"
       />
 
     </div>
@@ -13,7 +14,7 @@
     <div class="ser">
 
       <q-input
-      v-model="sendInfo.caption"
+      v-model="caption"
       label="Write a caption"
       class="input-textfield"
       maxlength="100"
@@ -34,31 +35,57 @@
 
 <script>
 import VueRouter from 'vue-router'
-import { mapActions } from 'vuex'
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
 import * as firebase from "firebase/app"
 import 'firebase/storage'
-import { firebaseAuth } from 'boot/firebase'
 
 export default {
   name: 'PreparePost',
   data() {
     return{
-      sendInfo: {
-        caption: '',
-        day: new Date().getDate(),
-        month: new Date().getMonth(),
-        year: new Date().getFullYear(),
-        picture: '',
-        location: 'Change Late in sendPost'
-      },
-      preview: ''
+      caption: '',
+      date: new Date().toDateString(),
+      picture: '',
+      location: 'Change Late in sendPost'
     }
   },
   methods: {
-    ...mapActions('post', ['sendPost']),
+
     submitPost(){
-      this.sendPost(this.sendInfo)
+      let currentUser = firebaseAuth.currentUser.uid;
+
+      firebaseDb.collection("posts-feed").add({
+          postUser: currentUser,
+          postCaption: this.caption,
+          postDate: this.date,
+          postLike: '0',
+          postComment: '0',
+          // !For dev
+          // postPic: this.picture,
+          postLocation: this.location,
+          postTime: new Date().getTime()
+      })
+      // ! FOR REAL WORLD BEGIN
+      .then(docRef => {
+
+        var storageRef = firebase.storage().ref()
+        var postsImagesRef = storageRef.child(`posts/${docRef.id}`)
+        var file = this.picture
+
+        postsImagesRef.putString(file, 'data_url').then(snapshot => {
+          
+          console.log('Uploaded a data_url string! ' + docRef.id)
+
+          this.$router.push({ path: '/FeedFollowing' })
+          .catch(err => {
+            console.log(err)
+          })
+
+        })
+      })
+      // ! FOR REAL WORLD END
     },
+
     genPic(){
       var picGen = this.$route.params.picId + '/' + this.$route.params.picStore + '/' + this.$route.params.picEmu + '/' + this.$route.params.picN + '/' + this.$route.params.picPic + '/' + this.$route.params.picName
 
@@ -73,7 +100,7 @@ export default {
         var reader = new FileReader()
 
         reader.onloadend = e => {
-          this.sendInfo.picture = e.currentTarget.result
+          this.picture = e.currentTarget.result
         }
 
         reader.readAsDataURL(fullPhotoBlob)
@@ -82,6 +109,8 @@ export default {
         console.log('Error occured')
       });
     }
+
+    
   },
   created(){
     this.genPic()

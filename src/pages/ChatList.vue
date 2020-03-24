@@ -28,22 +28,23 @@
 
         <q-item
         clickable
-        to="/ChatRoom"
+        :to="chatItem.userId"
         >
           <q-item-section avatar>
             <q-avatar
             size="52px"
             >
               <q-img
-              :src="chatItem.chatAvatar"
+              :src="chatItem.avatar"
               :ratio="1"
+              placeholder-src="../assets/layout/placeholder_01.png"
               />
             </q-avatar>
           </q-item-section>
           
           <q-item-section>
-            <q-item-label overline>{{ chatItem.chatName }}</q-item-label>
-            <q-item-label caption>{{ lastMsgLimit(chatItem.chatLastMsg) }}</q-item-label>
+            <q-item-label overline>{{ chatItem.name }}</q-item-label>
+            <q-item-label caption>{{ lastMsgLimit(chatItem.lastMsg) }}</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -52,30 +53,99 @@
     </q-list>
     <!-- /Chat List Conversations -->
 
+    <q-scroll-area
+    class="search-list"
+    v-if="showSearchList === true && testList.length > 0"
+    >
+      <q-item
+      clickable      
+      v-for="testL in testList" v-bind:key="testL.id"
+      :to="'/ChatRoom/' + testL[0]"
+      >
+        <q-item-section avatar>
+          <q-avatar
+          size="45px"
+          >
+            <q-img
+            :src="testL[2]"
+            :ratio="1"
+            placeholder-src="../assets/layout/placeholder_01.png"
+            />
+          </q-avatar>
+        </q-item-section>
+        
+        <q-item-section>
+          <q-item-label overline>{{ testL[1] }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+    </q-scroll-area>
+
   </q-page>
 </template>
 
 <script>
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
+import * as firebase from "firebase/app"
+import 'firebase/storage'
+
 export default {
   name: 'ChatList',
+  watch: {
+    search: "searchUsers"
+  },
+  created() {
+    this.genList()
+  },
+  mounted() {
+    this.getUsers()
+  },
   data() {
     return {
-      chatItems: [
-        {
-          chatAvatar: 'https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-          chatName: 'Charlie',
-          chatLastMsg: "That's cool! See you tmr" 
-        },
-        {
-          chatAvatar: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-          chatName: 'Lorie',
-          chatLastMsg: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem nemo ut harum, iusto numquam quia vitae repudiandae facilis aut rem minus provident?" 
-        }
-      ],
-      search: ''
+      chatItems: [],
+      search: '',
+      userList: [],
+      showSearchList: false,
+      testList: []
     }
   },
   methods: {
+    genList(){
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('have-chat').doc(currentUser).collection('with').get()
+      .then(docs => {
+        docs.forEach(doc => {
+          firebaseDb.collection('users-info').doc(doc.id).get()
+          .then(response => {
+            let newArr = {}
+            newArr.name = response.data().name
+            newArr.userId = '/ChatRoom/' + doc.id
+            // !FOR DEV
+            // newArr.avatar = doc.data().avatar
+            // !FOR DEV
+            newArr.lastMsg = 'Test'
+            // !FOR DEV
+            // this.chatItems.push(newArr)
+
+            // !FOR REAL WORLD BEGIN
+            var storageRef = firebase.storage().ref()
+            var avatarImagesRef = storageRef.child(`avatars/${doc.id}`)      
+
+            avatarImagesRef.getDownloadURL().then(url => {
+
+              newArr.avatar = url
+
+              this.chatItems.push(newArr)
+
+            })
+            .catch(err => {
+              console.log(err)
+            })
+            // !FOR REAL WORLD END
+          })
+        })
+      })
+    },
     
     lastMsgLimit(lastMsg){
       var limitMsg = '';
@@ -110,6 +180,49 @@ export default {
       this.timer = setTimeout(() => {
         reset()
       }, 1000)
+    },
+
+    getUsers(){
+      firebaseDb.collection('users-info').get()
+      .then(docs => {
+        docs.forEach(doc => {
+
+            // !FOR REAL WORLD BEGIN
+            var storageRef = firebase.storage().ref()
+            var avatarImagesRef = storageRef.child(`avatars/${doc.id}`)      
+
+            avatarImagesRef.getDownloadURL().then(url => {
+              
+              let user = doc.id + '*' + doc.data().name + '*' + url
+
+            this.userList.push(user)
+
+            })
+            .catch(err => {
+              console.log(err)
+            })
+            // !FOR REAL WORLD END
+        })
+      })
+    },
+
+    searchUsers(){
+      let currentUser = firebaseAuth.currentUser.uid
+      let a = this.userList
+      let list = a.filter(item => item.toLowerCase().indexOf(this.search) > -1);
+      if(this.search != ''){
+        this.testList = []
+        list.forEach(user => {
+          let newT = user.split('*')
+          if(newT[0] != currentUser){
+            this.testList.push(newT)
+          }
+        })
+        this.showSearchList = true
+      } else {
+        this.testList = []
+        this.showSearchList = false
+      }
     }
   },
 
@@ -118,3 +231,21 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.search-list{
+  position: fixed;
+  top: 150px;
+  padding: 0 1rem;
+  left: 0;
+  right: 0;
+  bottom: 20%;
+  background: white;
+  max-height: 70%;
+  z-index: 9999;
+
+  .q-item{
+    margin-bottom: 1rem;
+  }
+}
+</style>

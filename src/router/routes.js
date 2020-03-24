@@ -33,10 +33,10 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/Map',
+    path: '/Explore',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Map.vue') }
+      { path: '', component: () => import('pages/Explore.vue') }
     ],
     meta: { requiresAuth: true }
   },
@@ -100,7 +100,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/ChatRoom',
+    path: '/ChatRoom/:userId',
     component: () => import('layouts/ChatRoomLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ChatRoom.vue') }

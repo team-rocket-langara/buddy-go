@@ -49,7 +49,7 @@
         <!-- Btn Map -->
         <q-item
         clickable
-        to="/Map"
+        to="/Explore"
         class="btn-map"
         exact
         >

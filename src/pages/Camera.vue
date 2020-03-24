@@ -12,6 +12,7 @@
         <q-img
         :src="imgItem.thumbnailURL"
         :ratio="1"
+        placeholder-src="../assets/layout/placeholder_01.png"
         />
       </q-btn>
     </div>
@@ -71,7 +72,7 @@ export default {
     openCamera(){
 
       var camOpt = {
-        quality: 100,
+        quality: 70,
         destinationType: navigator.camera.DestinationType.FILE_URI,
         encodingType: navigator.camera.EncodingType.JPEG,
         sourceType: navigator.camera.PictureSourceType.CAMERA,

@@ -2,14 +2,19 @@
   <q-page class="post-list page">
 
     <!-- Post Item -->
-    <div v-for="postItem in getPostList" v-bind:key="postItem.id" class="post-list-item">
+    <div
+    v-if="showPosts === true"
+    v-for="postItem in getPostList"
+    v-bind:key="postItem.id"
+    class="post-list-item"
+    >
 
       <!-- Post Header -->
       <header>
 
         <!-- Post Item Avatar -->
         <q-btn
-        :to="postItem[2]"
+        :to="postItem.postUserUrl"
         :ripple="false"
         >
 
@@ -18,8 +23,9 @@
           >
 
             <q-img
-            :src="postItem[7]"
+            :src="postItem.userAvatar"
             :ratio="1"
+            placeholder-src="../assets/layout/placeholder_01.png"
             />
 
           </q-avatar>
@@ -31,11 +37,11 @@
         <div class="post-list-info">
           <q-item
           clickable
-          :to="postItem[2]"
+          :to="postItem.postUserUrl"
           >
             <q-item-section>
-              <q-item-label overline>{{ postItem[1] }}</q-item-label>
-              <q-item-label caption>{{ postItem[1] }}</q-item-label>
+              <q-item-label overline>{{ postItem.postUser }}</q-item-label>
+              <q-item-label caption>{{ postItem.postLocation }}</q-item-label>
             </q-item-section>
           </q-item>
         </div>
@@ -46,43 +52,45 @@
 
       <!-- Post Item Title -->
       <div class="post-list-title">
-        <h1>{{ postItem[3] }}</h1>
+        <h1>{{ postItem.postCap }}</h1>
       </div>
       <!-- /Post Item Title -->
 
       <!-- Post Item Pic -->
       <q-img
-      :src="postItem[6]"
+      :src="postItem.postPic"
       ratio="1"
-      >
-        <template v-slot:loading>
-          <q-spinner-gears color="black" />
-        </template>
-      </q-img>
+      placeholder-src="../assets/layout/placeholder_01.png"
+      />
       <!-- /Post Item Pic -->
 
       <!-- Post Item Btns -->
       <div class="post-list-social">
         <q-btn
         class="btn-social"
-        @click="checkLogin()"
+        @click="genLike(postItem.postId)"
         >
           <img src="../assets/layout/paw-icon.svg">
         </q-btn>
-        <p class="counter">{{ postItem[5] }}</p>
+        <p class="counter">{{ postItem.postLike }}</p>
 
         <q-btn
         class="btn-social"
-        :to="postItem[0]"
+        :to="postItem.postUrl"
         >
           <img src="../assets/layout/comments-icon.svg">
         </q-btn>
-        <p class="counter">10</p>
+        <p class="counter">{{ postItem.postComment }}</p>
+        <span>{{ postItem.postDate }}</span>
       </div>
       <!-- /Post Item Btns -->
 
     </div>
     <!-- /Post Item -->
+
+    <h1
+    v-if="showPosts === false"
+    >Message Here</h1>
 
   </q-page>
 </template>
@@ -101,64 +109,108 @@ export default {
   },
   data() {
     return {
-      getPostList: []
+      getPostList: [],
+      showPosts: true
     }
   },
   methods: {
-    ...mapActions('login', ['checkUser']),
     ...mapActions('user', ['userInfo']),
-    checkLogin(){
-        this.checkUser()
-    },
     userInfoLogin(){
       this.userInfo()
     },
     genPostList(){
-      firebaseDb.collection("posts-feed").orderBy('postTime', "desc").get()
-      .then((response) => {
-        response.docs.forEach(doc => {
-          firebaseDb.collection("users-info").doc(doc.data().postUser).get()
-          .then((newget) => {
-            var newArr = []
-            var run = false
-            var postUser = newget.data().name
-            var postUserId = '/UserProfile/' + doc.data().postUser
-            var postId = '/SinglePost/' + doc.id
-            var postCap = doc.data().postCaption
-            var postDate = doc.data().postDay
-            var postLike = doc.data().postLike
-            var postPic = doc.data().postPic
-            var userAvatar = newget.data().avatar
+      let currentUser = firebaseAuth.currentUser.uid
+      let whoFollow = []
 
-            newArr.push(postId, postUser, postUserId, postCap, postDate, postLike, postPic, userAvatar);
-
-            // var storageRef = firebase.storage().ref()
-            // var avatarImgRef = storageRef.child(`avatars/${doc.data().postUser}`)
-            // var postImgRef = storageRef.child(`posts/${doc.data().postPic}`)      
-
-            // avatarImgRef.getDownloadURL()
-            // .then(avatarUrl => {
-
-            //   newArr.push(avatarUrl)
-            //   run = true
-
-            //   if(run){
-            //     postImgRef.getDownloadURL()
-            //     .then(postUrl => {
-
-            //       newArr.push(postUrl)
-
-            //     })
-            //   }
-
-            // })
-
-            // console.log(newArr)
-
-            this.getPostList.push(newArr)
-          })
+      firebaseDb.collection('follow-list').doc(currentUser).collection('i-follow').get()
+      .then(docs => {
+        let i = 0
+        docs.forEach(doc => {
+          whoFollow[i] = doc.id
+          i++
         })
       })
+      .then(response => {
+          firebaseDb.collection('posts-feed').where('postUser', 'in', whoFollow).orderBy("postTime", "desc").get()
+          .then(docs => {
+            if(docs.empty === false){
+              docs.forEach(doc => {
+                firebaseDb.collection("users-info").doc(doc.data().postUser).get()
+                .then(response => {
+                  const newArr = {}
+
+                  newArr.postUser = response.data().name
+                  newArr.postUserUrl = '/UserProfile/' + doc.data().postUser
+                  newArr.postUrl = '/SinglePost/' + doc.id
+                  newArr.postCap = doc.data().postCaption
+                  newArr.postDate = doc.data().postDate
+                  newArr.postLike = doc.data().postLike
+                  // !For Dev
+                  // newArr.postPic = change.doc.data().postPic
+                  newArr.postLocation = doc.data().postLocation
+                  newArr.postComment = doc.data().postComment
+                  // !For Dev
+                  // newArr.userAvatar = response.data().avatar
+                  newArr.postId = doc.id
+                  
+                  // !FOR REAL WORLD BEGIN
+                  var storageRef = firebase.storage().ref()
+                  var avatarImagesRef = storageRef.child(`avatars/${doc.data().postUser}`)      
+
+                  avatarImagesRef.getDownloadURL().then(url => {
+
+                    newArr.userAvatar = url
+
+                  })
+                  .then(resp => {
+                    var postsImagesRef = storageRef.child(`posts/${doc.id}`)      
+
+                    postsImagesRef.getDownloadURL().then(url => {
+
+                      newArr.postPic = url
+
+                    })
+                    .then(resp => {
+                      this.getPostList.unshift(newArr)
+                    })
+                    .catch(err => {
+                      console.log(err)
+                    })
+                  })
+                  .catch(err => {
+                    console.log(err)
+                  })
+                  // !FOR REAL WORLD END
+
+                  // ! FOR DEV
+                  // this.getPostList.unshift(newArr)
+
+                  // console.log(this.getPostList)
+                })
+              })
+            } else {
+              this.showPosts = false
+            }
+          })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    genLike(postId){
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('posts-feed').doc(postId).update({
+        postLike: firebase.firestore.FieldValue.increment(1)
+      })
+      .then(response => {
+        firebaseDb.collection('posts-feed').doc(postId).collection('likes').doc(currentUser).set({
+          like: true
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      // console.log(postId)
     }
   }
 }
