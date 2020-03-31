@@ -28,10 +28,12 @@
       ]"
       />
 
-      <q-input
+      <q-select
+      borderless
       v-model="formData.gender"
+      :options="genderOpt"
       label="Gender"
-      class="input-textfield"
+      class="select-input"
       />
 
       <q-input
@@ -93,7 +95,10 @@ export default {
         toy: '',
         bio: '',
         hometown: ''
-      }
+      },
+      genderOpt: [
+        'Male', 'Female'
+      ]
     }
   },
   methods: {

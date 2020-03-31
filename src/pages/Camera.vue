@@ -114,6 +114,9 @@ export default {
       var str = photoId
       var res = str.replace(";", "X")
       this.$router.push({path: '/PreparePost/' + res})
+      .catch((err) => {
+        console.log(err)
+      })
     }
   },
   mounted(){
@@ -130,7 +133,7 @@ export default {
 .camera-btn-area{
   position: fixed;
   width: 100%;
-  bottom: 0;
+  bottom: .5rem;
   height: 150px;
   display: flex;
   justify-content: center;

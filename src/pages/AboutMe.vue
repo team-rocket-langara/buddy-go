@@ -12,7 +12,7 @@
     />
 
     <h1>{{ usersInfo.name }}</h1>
-    <h2>000 followers &bull; 000 following</h2>
+    <h2>{{ usersInfo.followers }} followers &bull; {{ usersInfo.following }} following</h2>
     
     <ul>
       <li><span>Breed:</span> {{ usersInfo.breed }}</li>
@@ -65,29 +65,15 @@ export default {
                   toy: doc.data().toy,
                   hometown: doc.data().hometown,
                   bio: doc.data().bio,
+                  followers: doc.data().followers,
+                  following: doc.data().following,
+                  // !FOR REAL WORLD
+                  avatar: doc.data().avatar,
                   // !FOR DEV
-                  // avatar: doc.data().avatar
+                  // avatar: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
               }
 
-              // !FOR REAL WORLD BEGIN
-              var storageRef = firebase.storage().ref()
-              var avatarImagesRef = storageRef.child(`avatars/${this.$route.params.idUser}`)      
-
-              avatarImagesRef.getDownloadURL().then(url => {
-
-                userInfos.avatar = url
-                
-                this.usersInfo = Object.assign(userInfos)
-              })
-              .catch(err => {
-                console.log(err)
-              })
-              // !FOR REAL WORLD END
-
-              // !FOR DEV
-              // this.usersInfo = Object.assign(userInfos)
-
-              console.log(this.usersInfo)
+              this.usersInfo = Object.assign(userInfos)
 
           } else {
               // doc.data() will be undefined in this case

@@ -20,6 +20,13 @@
       maxlength="100"
       />
 
+      <q-input
+      v-model="location"
+      label="Share your location"
+      class="input-textfield"
+      maxlength="100"
+      />
+
       <q-btn
       class="btn-big btn-round btn-purple"
       type="submit"
@@ -44,9 +51,8 @@ export default {
   data() {
     return{
       caption: '',
-      date: new Date().toDateString(),
       picture: '',
-      location: 'Change Late in sendPost'
+      location: ''
     }
   },
   methods: {
@@ -55,32 +61,38 @@ export default {
       let currentUser = firebaseAuth.currentUser.uid;
 
       firebaseDb.collection("posts-feed").add({
-          postUser: currentUser,
-          postCaption: this.caption,
-          postDate: this.date,
-          postLike: '0',
-          postComment: '0',
-          // !For dev
-          // postPic: this.picture,
-          postLocation: this.location,
-          postTime: new Date().getTime()
+        user: currentUser,
+        caption: this.caption,
+        like: '0',
+        comment: '0',
+        timestamp: firebase.firestore.Timestamp.now(),
+        location: this.location,
+        // !For dev
+        // picture: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+        
       })
       // ! FOR REAL WORLD BEGIN
-      .then(docRef => {
+      .then(response => {
 
         var storageRef = firebase.storage().ref()
-        var postsImagesRef = storageRef.child(`posts/${docRef.id}`)
+        var postsImagesRef = storageRef.child(`posts/${response.id}`)
         var file = this.picture
 
         postsImagesRef.putString(file, 'data_url').then(snapshot => {
           
-          console.log('Uploaded a data_url string! ' + docRef.id)
+          postsImagesRef.getDownloadURL().then(url => {
 
-          this.$router.push({ path: '/FeedFollowing' })
-          .catch(err => {
-            console.log(err)
+            firebaseDb.collection('posts-feed').doc(response.id).update({
+              picture: url
+            })
+            .then(response => {
+
+              this.$router.push({ path: '/FeedFollowing' })
+              .catch(err => {
+                console.log(err)
+              })
+            })
           })
-
         })
       })
       // ! FOR REAL WORLD END

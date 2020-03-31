@@ -38,15 +38,31 @@ export default {
         let changes = snapshot.docChanges()
         changes.forEach(change => {
           
-          let newArr = {}
-          newArr.origin = change.doc.data().me
-          newArr.message = change.doc.data().msg
-          newArr.time = change.doc.data().time
-          this.msgList.push(newArr)
+          if(change.type == "added"){
 
+            let newArr = {}
+            newArr.origin = change.doc.data().me
+            newArr.message = change.doc.data().msg
+
+            var nano = change.doc.data().timestamp.nanoseconds.toString()
+            var newNano = change.doc.data().timestamp.seconds + nano.charAt(0) + nano.charAt(1) + nano.charAt(2)
+
+            var date = new Date(Number(newNano))
+            // Hours part from the timestamp
+            var hours = date.getHours()
+            // Minutes part from the timestamp
+            var minutes = "0" + date.getMinutes()
+            
+            var formattedTime = hours + ':' + minutes.substr(-2)
+
+            newArr.time = formattedTime
+            this.msgList.push(newArr)
+
+          }
         })
       })
     },
+
     getInfoUser(){
       firebaseDb.collection('users-info').doc(this.$route.params.userId).get()
       .then(doc => {
@@ -55,19 +71,14 @@ export default {
     },
 
     scrollToEnd () {
-      var content = this.$refs.container;
-      content.scrollTop = content.scrollHeight;
+      window.scrollTo(0,document.querySelector("body").scrollHeight);
     }
   },
   
   updated () {
-  	// This will be called when the component updates
-    // try toggling a todo
   	this.scrollToEnd(); 
-  },
-  
+  },  
   mounted () {
-  	// This will be called on load
   	this.scrollToEnd();	
   }
 }

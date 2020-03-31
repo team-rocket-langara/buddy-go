@@ -1,0 +1,22 @@
+.adopt-profile{
+  
+  h2{
+    padding: 1rem .5rem;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+  }
+
+  li{
+    margin-bottom: .5rem;
+  }
+
+  p{
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  span{
+    color: $primary;
+    font-weight: bold;
+  }
+}

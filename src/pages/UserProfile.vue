@@ -143,30 +143,14 @@ export default {
               const userInfos = {
                   name: doc.data().name,
                   followers: doc.data().followers,
-                  following: doc.data().following
+                  following: doc.data().following,
+                  // !FOR REAL WORLD
+                  avatar: doc.data().avatar,
                   // !FOR DEV
-                  // avatar: doc.data().avatar
+                  // avatar: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
               }
 
-              // !FOR REAL WORLD BEGIN
-              var storageRef = firebase.storage().ref()
-              var avatarImagesRef = storageRef.child(`avatars/${this.$route.params.idUser}`)      
-
-              avatarImagesRef.getDownloadURL().then(url => {
-
-                userInfos.avatar = url
-                
-                this.usersInfo = Object.assign(userInfos)
-              })
-              .catch(err => {
-                console.log(err)
-              })
-              // !FOR REAL WORLD END
-
-              // !FOR DEV
-              // this.usersInfo = Object.assign(userInfos)
-
-              // console.log(this.usersInfo)
+              this.usersInfo = Object.assign(userInfos)
 
           } else {
               // doc.data() will be undefined in this case
@@ -180,35 +164,16 @@ export default {
     
     getAllPosts(){
       firebaseDb.collection("posts-feed")
-      .where("postUser", "==", this.$route.params.idUser)
-      .orderBy("postTime", "desc")
+      .where("user", "==", this.$route.params.idUser)
+      .orderBy("timestamp", "desc")
       .get()
       .then((response) => {
         response.docs.forEach(doc => {
-          var newArr = []
-          var postId = '/SinglePost/' + doc.id
-          // !FOR DEV
-          // var postPic = doc.data().postPic
+          var newArr = [
+            '/SinglePost/' + doc.id + '/' + this.$route.params.idUser,
+            doc.data().picture  
+          ]
 
-          // !FOR REAL WORLD BEGIN
-          var storageRef = firebase.storage().ref()
-          var postsImagesRef = storageRef.child(`posts/${doc.id}`)      
-
-          postsImagesRef.getDownloadURL().then(url => {
-
-            var postPic = url
-            
-            newArr.push(postId, postPic)
-          })
-          .catch(err => {
-            console.log(err)
-          })
-          // !FOR REAL WORLD END
-
-          // !FOR DEV
-          // newArr.push(postId, postPic)
-          
-          // console.log(newArr)
           this.allPosts.push(newArr)
         })
       })

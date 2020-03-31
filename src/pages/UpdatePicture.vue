@@ -164,32 +164,25 @@ export default {
 
       let currentUser = firebaseAuth.currentUser.uid;
 
-      // !FOR DEV BEGIN
-      // if (currentUser) {
-      //   // Update document in collection "users-info"
-      //   firebaseDb.collection("users-info").doc(currentUser).update({
-      //     avatar: this.fileToUse
-      //   })
-      //   .then(response => {
-      //     this.$router.push({ path: '/FeedFollowing' })
-      //   })
-      //   .catch(function(error) {
-      //     console.error("Error updating document: ", error);
-      //   })
-      // }
-      // !FOR DEV END
-
-      var storageRef = firebase.storage().ref()
-      var avatarImagesRef = storageRef.child(`avatars/${currentUser}`)
-      var file = this.fileToUse
+      let storageRef = firebase.storage().ref()
+      let avatarImagesRef = storageRef.child(`avatars/${currentUser}`)
+      let file = this.fileToUse
 
       avatarImagesRef.putString(file, 'data_url').then(snapshot => {
         
-        console.log('Uploaded a data_url string! ' + currentUser)
-        this.$router.push({ path: '/FeedFollowing' })
-        .catch(err => {
-          console.log(err)
-        })
+        avatarImagesRef.getDownloadURL().then(url => {
+
+            firebaseDb.collection('users-info').doc(currentUser).update({
+              avatar: url
+            })
+            .then(response => {
+
+              this.$router.push({ path: '/FeedFollowing' })
+              .catch(err => {
+                console.log(err)
+              })
+            })
+          })
 
       })
     }

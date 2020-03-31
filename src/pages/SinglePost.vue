@@ -18,7 +18,7 @@
           >
 
             <q-img
-            :src="postInfo.userAvatar"
+            :src="postInfo.avatar"
             :ratio="1"
             />
 
@@ -31,11 +31,11 @@
         <div class="post-list-info">
           <q-item
           clickable
-          :to="postInfo.postUserUrl"
+          :to="postInfo.profileUrl"
           >
             <q-item-section>
-              <q-item-label overline>{{ postInfo.postUser }}</q-item-label>
-              <q-item-label caption>{{ postInfo.postLocation }}</q-item-label>
+              <q-item-label overline>{{ postInfo.user }}</q-item-label>
+              <q-item-label caption>{{ postInfo.location }}</q-item-label>
             </q-item-section>
           </q-item>
         </div>
@@ -46,13 +46,13 @@
 
       <!-- Post Item Title -->
       <div class="post-list-title">
-        <h1>{{ postInfo.postCap }}</h1>
+        <h1>{{ postInfo.caption }}</h1>
       </div>
       <!-- /Post Item Title -->
 
       <!-- Post Item Pic -->
       <q-img
-      :src="postInfo.postPic"
+      :src="postInfo.picture"
       ratio="1"
       />
       <!-- /Post Item Pic -->
@@ -63,18 +63,37 @@
         class="btn-social"
         @click="genHtml('a')"
         >
-          <img src="../assets/layout/paw-icon.svg">
+          <img v-if="thisLike === true" src="../assets/layout/paw-icon-active.svg">
+          <img v-if="thisLike === false" src="../assets/layout/paw-icon.svg">
         </q-btn>
-        <p class="counter">{{ postInfo.postLike }}</p>
-        <span>{{ postInfo.postDate }}</span>
+        <p class="counter">{{ postInfo.like }}</p>
+        <span>{{ postInfo.date }}</span>
       </div>
       <!-- /Post Item Btns -->
+
+      <div class="remove-area"
+      v-if="postInfo.userId == currentUser"
+      @click="removePost"
+      >
+        <q-btn
+        label="Delete Post"
+        />
+      </div>
 
       <!-- Post Item Comments -->
       <div class="post-list-comments-wrapper">
         <ul>
           <li v-for="comment in comments" v-bind:key="comment.id">
-            <span class="name">{{ comment[2] }}: </span>{{ comment[0] }}
+            <span class="name">
+              <q-item
+              clickable
+              :to="comment[3]"
+              >
+                <q-item-label>
+                  {{ comment[2] }}
+                </q-item-label>
+              </q-item>
+              </span>{{ comment[0] }}
             <br>
             <span class="date">{{ comment[1] }}</span>
           </li>
@@ -102,63 +121,65 @@ export default {
   data(){
     return {
       postInfo: {},
-      comments: []
+      comments: [],
+      thisLike: false,
+      currentUser: firebaseAuth.currentUser.uid
     }
   },
   methods: {
     getPostInfo(){
+      let currentUser = firebaseAuth.currentUser.uid
       firebaseDb.collection("posts-feed").doc(this.$route.params.postId).get()
       .then((response) => {
 
         if(response.exists){
 
-          firebaseDb.collection("users-info").doc(response.data().postUser).get()
+          firebaseDb.collection("users-info").doc(response.data().user).get()
           .then((newget) => {
-            var newArr = {}
-            newArr.postUser = newget.data().name
-            newArr.postUserUrl = '/UserProfile/' + response.data().postUser
-            newArr.postCap = response.data().postCaption
-            newArr.postDate = response.data().postDate
-            newArr.postLike = response.data().postLike
-            newArr.postLocation = response.data().postLocation
-            // ! FOR DEV
-            // newArr.postPic = response.data().postPic
-            // ! FOR DEV
-            // newArr.userAvatar = newget.data().avatar
 
-            // !FOR REAL WORLD BEGIN
-            var storageRef = firebase.storage().ref()
-            var avatarImagesRef = storageRef.child(`avatars/${response.data().postUser}`)      
+            let nano = response.data().timestamp.nanoseconds.toString()
+            let newNano = response.data().timestamp.seconds + nano.charAt(0) + nano.charAt(1) + nano.charAt(2)
 
-            avatarImagesRef.getDownloadURL().then(url => {
+            let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-              newArr.userAvatar = url
+            let date = new Date(Number(newNano))
+            let day = date.getDate()
+            let month = months[date.getMonth()]
+            
+            let formattedTime = `${day} ${month}`
 
-            })
-            .then(resp => {
-              var postsImagesRef = storageRef.child(`posts/${this.$route.params.postId}`)      
+            var newObj = {
+              user: newget.data().name,
+              profileUrl: '/UserProfile/' + response.data().user,
+              caption: response.data().caption,
+              like: response.data().like,
+              location: response.data().location,
+              avatar: newget.data().avatar,
+              picture: response.data().picture,
+              date: formattedTime,
+              userId: newget.id
+              // ! FOR DEV
+              // picture: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
+              // avatar: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+            }
 
-              postsImagesRef.getDownloadURL().then(url => {
+            firebaseDb.collection('posts-feed').doc(this.$route.params.postId).collection('likes').doc(currentUser).get()
+            .then(likeGet => {
+              
+              if(likeGet.exists === true){
 
-                newArr.postPic = url
+                this.thisLike = true
 
-              })
-              .then(resp => {
-                this.postInfo = Object.assign(newArr)
-              })
-              .catch(err => {
-                console.log(err)
-              })
-            })
-            .catch(err => {
-              console.log(err)
-            })
-            // !FOR REAL WORLD END
+              } else {
 
-             // ! FOR DEV
-            // this.postInfo = Object.assign(newArr)
+                this.thisLike = false
 
-            // console.log(this.postInfo)
+              }
+              
+              this.postInfo = Object.assign(newObj)
+
+            })            
+            
           })
         } else {
           console.log('Error')
@@ -166,13 +187,25 @@ export default {
       })
     },
     getComments(){
-      firebaseDb.collection('posts-comments').doc(this.$route.params.postId).collection('comments').orderBy('time').onSnapshot(snapshot => {
+      firebaseDb.collection('posts-comments').doc(this.$route.params.postId).collection('comments').orderBy('timestamp').onSnapshot(snapshot => {
         let changes = snapshot.docChanges();
         changes.forEach(change => {
           if(change.type == 'added'){
+
+            let nano = change.doc.data().timestamp.nanoseconds.toString()
+            let newNano = change.doc.data().timestamp.seconds + nano.charAt(0) + nano.charAt(1) + nano.charAt(2)
+
+            let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+            let date = new Date(Number(newNano))
+            let day = date.getDate()
+            let month = months[date.getMonth()]
+            
+            let formattedTime = `${day} ${month}`
+
             let newArr = []
             let comment = change.doc.data().comment
-            let dateComment = change.doc.data().date
+            let dateComment = formattedTime
 
             // console.log(change.doc.data())
             newArr.push(comment, dateComment)
@@ -180,7 +213,8 @@ export default {
             firebaseDb.collection('users-info').doc(change.doc.data().user).get()
             .then(response => {
               let userName = response.data().name
-              newArr.push(userName)
+              let userProfile = '/UserProfile/' + response.id
+              newArr.push(userName, userProfile)
             })
             .then(response => {            
               this.comments.push(newArr)
@@ -191,6 +225,32 @@ export default {
           }
         })
       })
+    },
+    
+    removePost(){
+
+      navigator.notification.confirm(
+        'Do you really want to delete this post?', // message
+        this.confirmLog, // callback
+        'Delete Post', // title
+      );
+      
+    },
+
+    confirmLog(button){
+      if(button == 1){
+        firebaseDb.collection("posts-feed").doc(this.$route.params.postId).delete()
+        .then(response => {
+          this.$router.push({
+              path: '/FeedFollowing'
+          })
+          .catch(function(error) {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              console.log(`Code: ${errorCode} -- ${errorMessage}`);
+          })
+        })
+      }
     }
   },
   mounted(){    
@@ -198,3 +258,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import '../css/palette';
+
+.remove-area{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: .5rem .5rem;
+  color: $error;
+}
+</style>
