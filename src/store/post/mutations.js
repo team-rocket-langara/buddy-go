@@ -1,3 +1,3 @@
-// export function setPosts (state, getPosts) {
-//     Object.assign(state.posts, getPosts)
-// }
+export function setPosts (state, getPosts) {
+    state.postsInfo.unshift(getPosts)
+}

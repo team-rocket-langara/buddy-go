@@ -9,7 +9,7 @@
 
     <q-form
     class="login-form"
-    @submit="submitForm()">
+    @submit="submitForm(formData)">
 
       <q-input
       v-model="formData.email"
@@ -43,7 +43,10 @@
       </q-btn>
 
       <q-item
-      class="btn-small">
+      class="btn-small"
+      clickable
+      @click="sendReset()"
+      >
       Forgot your password?
       </q-item>
 
@@ -58,7 +61,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { firebaseAuth } from 'boot/firebase'
+import * as firebase from "firebase/app"
 
 export default {
   name: 'Login',
@@ -72,9 +76,51 @@ export default {
     }
   },
   methods: {
-    ...mapActions('login', ['loginAuth']),
-    submitForm() {
-      this.loginAuth(this.formData)
+    submitForm(payload) {
+      firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .then(function() {
+        return firebaseAuth.signInWithEmailAndPassword(payload.email, payload.password);
+      })
+      .then(response => {
+        this.$router.push({
+          path: '/FeedFollowing'
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(`loginAuth Route Code: ${errorCode} -- ${errorMessage}`);
+        })
+      })
+      .catch(error => {
+        this.$q.notify({
+          message: "E-mail or Password Incorrect!",
+          color: 'negative',
+          position: 'top'
+        })
+      });
+    },
+
+    sendReset(){
+      let userMail = this.formData.email
+      if(userMail != ''){
+        firebaseAuth.sendPasswordResetEmail(userMail)
+        .then(response => {
+          this.$q.notify({
+            message: "We sent an email to you!",
+            color: 'positive',
+            position: 'top'
+          })
+        })
+        .catch(function(error) {
+          console.log(error)
+        });
+      } else {
+        this.$q.notify({
+          message: "Please, inform your email",
+          color: 'negative',
+          position: 'top'
+        })
+      }
     }
   }
 }

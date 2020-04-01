@@ -6,7 +6,7 @@
         <q-img
         :src="imageSrc"
         ratio="1"
-        placeholder-src="https://cdn.shopify.com/s/assets/no-image-2048-5e88c1b20e087fb7bbe9a3771824e743c244f437e4f8ba93bbf7b11b53f7824c.gif"
+        placeholder-src="../assets/layout/placeholder_01.png"
         >
         </q-img>
       </div>
@@ -122,7 +122,7 @@ export default {
     openCamera(){
 
       var camOpt = {
-        quality: 100,
+        quality: 70,
         destinationType: navigator.camera.DestinationType.FILE_URI,
         encodingType: navigator.camera.EncodingType.JPEG,
         sourceType: navigator.camera.PictureSourceType.CAMERA,
@@ -164,36 +164,27 @@ export default {
 
       let currentUser = firebaseAuth.currentUser.uid;
 
-      if (currentUser) {
-        // Update document in collection "users-info"
-        firebaseDb.collection("users-info").doc(currentUser).update({
-          avatar: this.fileToUse
-        })
-        .catch(function(error) {
-            console.error("Error updating document: ", error);
-        })
-      }
+      let storageRef = firebase.storage().ref()
+      let avatarImagesRef = storageRef.child(`avatars/${currentUser}`)
+      let file = this.fileToUse
 
-      // var myId = firebaseAuth.currentUser.uid
-
-      // // Create a root reference
-      // var storageRef = firebase.storage().ref()
-
-      // // Create a reference to 'images/mountains.jpg'
-      // var mountainImagesRef = storageRef.child(`avatars/${myId}`)
-
-      // // Data URL string
-      // var message = this.fileToUse
-
-      // mountainImagesRef.putString(message, 'data_url').then(snapshot => {
+      avatarImagesRef.putString(file, 'data_url').then(snapshot => {
         
-      //   console.log('Uploaded a data_url string! ' + myId)
-      //   this.$router.push({ path: '/FeedFollowing' })
-      //   .catch(err => {
-      //     console.log(err)
-      //   })
+        avatarImagesRef.getDownloadURL().then(url => {
 
-      // })
+            firebaseDb.collection('users-info').doc(currentUser).update({
+              avatar: url
+            })
+            .then(response => {
+
+              this.$router.push({ path: '/FeedFollowing' })
+              .catch(err => {
+                console.log(err)
+              })
+            })
+          })
+
+      })
     }
 
   },

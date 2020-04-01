@@ -14,8 +14,9 @@
       >
 
         <q-img
-        :src="myPic"
+        :src="userInfo.avatar"
         :ratio="1"
+        placeholder-src="../assets/layout/placeholder_01.png"
         />
 
       </q-avatar>
@@ -36,7 +37,7 @@
 
       <q-item
       clickable
-      to="/UpdatePicture">
+      to="/EditAccount">
         <q-item-label>
           Account
         </q-item-label>
@@ -44,33 +45,35 @@
 
       <q-item
       clickable
-      @click="logginOut()"
-      >
+      to="/MyAdopts">
         <q-item-label>
-          Logout
+          Adopt Manager
         </q-item-label>
       </q-item>
 
     </q-list>
-    <!-- /Drawer List Menu -->
+    <!-- /Drawer List Menu -->    
+
+    <q-item
+    clickable
+    @click="logginOut()"
+    class="btn-round btn-yellow btn-logout"
+    >
+      <q-item-label>
+        Logout
+      </q-item-label>
+    </q-item>
 
   </q-layout>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import * as firebase from "firebase/app"
-import 'firebase/storage'
 import { firebaseAuth, firebaseDb } from 'boot/firebase'
+import VueRouter from 'vue-router'
 
 export default {
   name: 'SideMenuContent',
-  watch:{
-    myPic: "myAvatar"
-  },
-  created(){
-    this.myAvatar()
-  },
   data(){
     return{
       id: firebaseAuth.currentUser.uid,
@@ -78,31 +81,35 @@ export default {
     }
   },
   methods: {
-    ...mapActions('login', ['logOut']),
+
     logginOut() {
-      this.logOut()
+
+      navigator.notification.confirm(
+        'Do you want to Log out?', // message
+        this.confirmLog, // callback
+        'Logout', // title
+      );
+
     },
+
+    confirmLog(button){
+      if(button == 1){
+        firebaseAuth.signOut()
+        .then((response) => {
+          this.$router.push({
+            path: '/'
+          })
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(`logOut() -> Code: ${errorCode} -- ${errorMessage}`);
+        })
+      }
+    },
+
     myProfile(){
       this.$router.push({ path: '/UserProfile/' + this.id })
-    },
-    myAvatar(){
-
-      firebaseDb.collection("users-info").doc(this.id).get()
-      .then((newget) => {
-        this.myPic = newget.data().avatar
-      })
-
-      // // Create a root reference
-      // var storageRef = firebase.storage().ref()
-
-      // // Create a reference to 'images/mountains.jpg'
-      // var mountainImagesRef = storageRef.child(`avatars/${this.id}`)      
-
-      // mountainImagesRef.getDownloadURL().then(url => {
-
-      //   this.myPic = url
-
-      // })
     }
   },
   computed: {

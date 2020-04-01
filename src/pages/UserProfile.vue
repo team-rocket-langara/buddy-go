@@ -10,8 +10,9 @@
       >
 
         <q-img
-        :src="userInfo.avatar"
+        :src="usersInfo.avatar"
         :ratio="1"
+        placeholder-src="../assets/layout/placeholder_01.png"
         />
 
       </q-avatar>
@@ -21,8 +22,8 @@
       <div class="user-profile-name">
         <q-item>
           <q-item-section>
-            <q-item-label overline> {{ userInfo.name }} </q-item-label>
-            <q-item-label caption>{{ followInfo.followers }} Followers &bull; {{ followInfo.following }} Following</q-item-label>
+            <q-item-label overline> {{ usersInfo.name }} </q-item-label>
+            <q-item-label caption>{{ usersInfo.followers }} Followers &bull; {{ usersInfo.following }} Following</q-item-label>
 
             <q-list>
 
@@ -63,10 +64,18 @@
     <div class="global-separator">
       <q-btn
       class="btn-small btn-purple btn-round"
-      v-if="thisUser !== this.$route.params.idUser"
-      @click="pressFollow"
+      v-if="thisUser !== this.$route.params.idUser && ifollow === false"
+      @click="startFollow"
       >
       Follow
+      </q-btn>
+
+      <q-btn
+      class="btn-small btn-purple btn-round"
+      v-if="thisUser !== this.$route.params.idUser && ifollow === true"
+      @click="stopFollow"
+      >
+      Unfollow
       </q-btn>
     </div>
     <!-- /Btn Follow Area -->
@@ -81,6 +90,7 @@
         <q-img
         :src="postItem[1]"
         :ratio="1"
+        placeholder-src="../assets/layout/placeholder_01.png"
         />
       </q-btn>
     </div>
@@ -104,53 +114,119 @@ export default {
     }
   },
   created(){
-    this.getInfo()
     this.getAllPosts()
+    this.checkFollow()
+  },
+  mounted(){    
+    this.getInfo()
   },
   data(){
     return{
       thisUser: firebaseAuth.currentUser.uid,
       userAvatar: '',
-      allPosts: []
+      allPosts: [],
+      usersInfo: {},
+      ifollow: false
     }
   },
   methods:{
-    ...mapActions('user', ['otherUser']),
-    ...mapActions('follow', ['startFollow']),
     aboutMe(){
       this.$router.push({ path: '/AboutMe/' + this.$route.params.idUser })
     },
+
+    checkFollow(){
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('follow-list').doc(currentUser).collection('i-follow').doc(this.$route.params.idUser).get()
+      .then(response => {
+        
+        if(response.exists === true){
+          this.ifollow = true
+        }
+      })
+    },
+
     getInfo(){
-      this.otherUser(this.$route.params.idUser)
+
+      firebaseDb.collection("users-info").doc(this.$route.params.idUser).get()
+      .then(doc => {
+
+          if (doc.exists) {                
+
+              const userInfos = {
+                  name: doc.data().name,
+                  followers: doc.data().followers,
+                  following: doc.data().following,
+                  // !FOR REAL WORLD
+                  avatar: doc.data().avatar,
+                  // !FOR DEV
+                  // avatar: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+              }
+
+              this.usersInfo = Object.assign(userInfos)
+
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      })
+      .catch(function(error) {
+          console.log("Error getting document:", error);
+      })
     },
-    pressFollow(){
-      this.startFollow(this.$route.params.idUser)
-    },
+    
     getAllPosts(){
       firebaseDb.collection("posts-feed")
-      .where("postUser", "==", this.$route.params.idUser)
-      .orderBy("postTime", "desc")
+      .where("user", "==", this.$route.params.idUser)
+      .orderBy("timestamp", "desc")
       .get()
       .then((response) => {
         response.docs.forEach(doc => {
-          var newArr = []
-          var postId = '/SinglePost/' + doc.id
-          var postPic = doc.data().postPic
+          var newArr = [
+            '/SinglePost/' + doc.id + '/' + this.$route.params.idUser,
+            doc.data().picture  
+          ]
 
-          newArr.push(postId, postPic)
-          
-          // console.log(newArr)
           this.allPosts.push(newArr)
         })
       })
-    }
-  },
-  computed: {
-    userInfo(){
-      return this.$store.getters['user/getOtherUserInfo']
     },
-    followInfo(){
-      return this.$store.getters['follow/getOtherFollow']
+
+    startFollow(){
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('follow-list').doc(currentUser).collection('i-follow').doc(this.$route.params.idUser).set({
+        follow: true
+      })
+      .then(response => {
+        firebaseDb.collection('users-info').doc(this.$route.params.idUser).update({
+          followers: firebase.firestore.FieldValue.increment(1)
+        })
+      })
+      .then(
+        firebaseDb.collection('users-info').doc(currentUser).update({
+          following: firebase.firestore.FieldValue.increment(1)
+        })
+      )
+      .then(        
+        this.ifollow = true
+      )
+    },
+
+    stopFollow(){
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('follow-list').doc(currentUser).collection('i-follow').doc(this.$route.params.idUser).delete()
+      .then(response => {
+        firebaseDb.collection('users-info').doc(this.$route.params.idUser).update({
+          followers: firebase.firestore.FieldValue.increment(-1)
+        })
+      })
+      .then(
+        firebaseDb.collection('users-info').doc(currentUser).update({
+          following: firebase.firestore.FieldValue.increment(-1)
+        })
+      )
+      .then(        
+        this.ifollow = false
+      )
     }
   }
 }

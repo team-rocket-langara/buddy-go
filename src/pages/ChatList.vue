@@ -15,67 +15,113 @@
 
     <!-- Chat List Conversations -->
     <q-list>
-      
-      <q-slide-item
-      @right="onRight"
-      v-for="chatItem in chatItems"
-      v-bind:key="chatItem.id"
-      >
-
-        <template v-slot:right>
-          <q-icon name="delete_forever" />
-        </template>
 
         <q-item
         clickable
-        to="/ChatRoom"
+        :to="chatItem.roomUrl"
+        v-for="chatItem in chatItems"
+        v-bind:key="chatItem.id"
         >
-          <q-item-section avatar>
-            <q-avatar
-            size="52px"
-            >
-              <q-img
-              :src="chatItem.chatAvatar"
-              :ratio="1"
-              />
-            </q-avatar>
-          </q-item-section>
-          
-          <q-item-section>
-            <q-item-label overline>{{ chatItem.chatName }}</q-item-label>
-            <q-item-label caption>{{ lastMsgLimit(chatItem.chatLastMsg) }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-      </q-slide-item>
+        <q-item-section avatar>
+          <q-avatar
+          size="52px"
+          >
+            <q-img
+            :src="chatItem.avatar"
+            :ratio="1"
+            placeholder-src="../assets/layout/placeholder_01.png"
+            />
+          </q-avatar>
+        </q-item-section>
+        
+        <q-item-section>
+          <q-item-label overline>{{ chatItem.name }}</q-item-label>
+          <q-item-label caption>{{ lastMsgLimit(chatItem.lastMsg) }}</q-item-label>
+        </q-item-section>
+      </q-item>
 
     </q-list>
     <!-- /Chat List Conversations -->
+
+    <q-scroll-area
+    class="search-list"
+    v-if="showSearchList === true && searchList.length > 0"
+    >
+      <q-item
+      clickable      
+      v-for="searchItem in searchList" v-bind:key="searchItem.id"
+      :to="'/ChatRoom/' + searchItem[0]"
+      >
+        <q-item-section avatar>
+          <q-avatar
+          size="45px"
+          >
+            <q-img
+            :src="searchItem[2]"
+            :ratio="1"
+            placeholder-src="../assets/layout/placeholder_01.png"
+            />
+          </q-avatar>
+        </q-item-section>
+        
+        <q-item-section>
+          <q-item-label overline>{{ searchItem[1] }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+    </q-scroll-area>
 
   </q-page>
 </template>
 
 <script>
+import { firebaseAuth, firebaseDb } from 'boot/firebase'
+import * as firebase from "firebase/app"
+import 'firebase/storage'
+
 export default {
   name: 'ChatList',
+  watch: {
+    search: "searchUsers"
+  },
+  created() {
+    this.genList()
+  },
+  mounted() {
+    this.getUsers()
+  },
   data() {
     return {
-      chatItems: [
-        {
-          chatAvatar: 'https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260',
-          chatName: 'Charlie',
-          chatLastMsg: "That's cool! See you tmr" 
-        },
-        {
-          chatAvatar: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-          chatName: 'Lorie',
-          chatLastMsg: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem nemo ut harum, iusto numquam quia vitae repudiandae facilis aut rem minus provident?" 
-        }
-      ],
-      search: ''
+      chatItems: [],
+      search: '',
+      userList: [],
+      showSearchList: false,
+      searchList: []
     }
   },
   methods: {
+    genList(){
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('have-chat').doc(currentUser).collection('with').get()
+      .then(response => {
+        response.forEach(doc => {
+          firebaseDb.collection('users-info').doc(doc.id).get()
+          .then(response => {
+            const newObj = {
+              name: response.data().name,
+              roomUrl: '/ChatRoom/' + doc.id,
+              lastMsg: this.lastMsgLimit(doc.data().msg),
+              // !FOR REAL WORLD
+              avatar: response.data().avatar
+              // !FOR DEV
+              // avatar: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+            }
+            this.chatItems.push(newObj)
+          })
+        })
+      })
+      
+    },
     
     lastMsgLimit(lastMsg){
       var limitMsg = '';
@@ -96,20 +142,40 @@ export default {
       return limitMsg;
     },
 
-    onRight ({ reset }) {
-      this.$q.notify({
-        position: 'top',
-        caption: 'Chat Deleted',
-        color: 'negative',
-        timeout: 1000
+    getUsers(){
+      firebaseDb.collection('users-info').limit(50).get()
+      .then(docs => {
+        docs.forEach(doc => {
+
+            // ! FOR REAL WORLD
+            let user = doc.id + '*' + doc.data().name + '*' + doc.data().avatar
+
+            // !FOR DEV
+            // let user = doc.id + '*' + doc.data().name + '*' + 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+
+            this.userList.push(user)
+
+        })
       })
-      this.finalize(reset)
     },
 
-    finalize (reset) {
-      this.timer = setTimeout(() => {
-        reset()
-      }, 1000)
+    searchUsers(){
+      let currentUser = firebaseAuth.currentUser.uid
+      let a = this.userList
+      let list = a.filter(item => item.toLowerCase().indexOf(this.search) > -1);
+      if(this.search != ''){
+        this.searchList = []
+        list.forEach(user => {
+          let newT = user.split('*')
+          if(newT[0] != currentUser){
+            this.searchList.push(newT)
+          }
+        })
+        this.showSearchList = true
+      } else {
+        this.searchList = []
+        this.showSearchList = false
+      }
     }
   },
 
@@ -118,3 +184,21 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.search-list{
+  position: fixed;
+  top: 150px;
+  padding: 0 1rem;
+  left: 0;
+  right: 0;
+  bottom: 20%;
+  background: white;
+  max-height: 70%;
+  z-index: 9999;
+
+  .q-item{
+    margin-bottom: 1rem;
+  }
+}
+</style>

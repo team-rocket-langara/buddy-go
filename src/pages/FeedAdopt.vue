@@ -11,7 +11,7 @@
 
       <!-- Post Item Pic -->
       <q-img
-      :src="postItem.postPicture"
+      :src="postItem.picture"
       ratio="1"
       />
       <!-- /Post Item Pic -->
@@ -26,7 +26,7 @@
           to="/UserProfile"
           >
             <q-item-section>
-              <q-item-label overline>{{ postItem.postName }}</q-item-label>
+              <q-item-label overline>{{ postItem.name }}</q-item-label>
             </q-item-section>
           </q-item>
         </div>
@@ -37,7 +37,7 @@
 
       <!-- Post Item Title -->
       <div class="post-list-title">
-        <h1>{{ postItem.postTitle }}</h1>
+        <h1>{{ postItem.desc }}</h1>
       </div>
       <!-- /Post Item Title -->
 
@@ -45,7 +45,7 @@
       <div class="global-separator">
         <q-btn
         class="btn-small btn-purple btn-round"
-        to="/AdoptProfile"
+        :to="'/AdoptProfile/' + postItem.id"
         >
         Details
         </q-btn>
@@ -59,23 +59,55 @@
 </template>
 
 <script>
+import { firebaseDb } from '../boot/firebase'
 export default {
   name: 'FeedAdopt',
   data() {
     return {
-      postItems: [
-        {
-          postName: 'Charlie',
-          postTitle: "Hello, Buddies! Here I'm enjoying the summer. It would be great if you could be here with me!",
-          postPicture: "https://images.pexels.com/photos/2023384/pexels-photo-2023384.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-        },
-        {
-          postName: 'Charlie',
-          postTitle: "Hello, Buddies! Here I'm enjoying the summer. It would be great if you could be here with me!",
-          postPicture: "https://images.pexels.com/photos/850602/pexels-photo-850602.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        }
-      ]
+      postItems: []
     }
+  },
+  methods: {
+    getAdoptPosts(){
+      firebaseDb.collection('adopt-feed').orderBy('timestamp').get()
+      .then(docs => {
+        docs.forEach(doc => {
+          let newObj = {
+            name: doc.data().name,
+            picture: doc.data().picture,
+            desc: this.lastMsgLimit(doc.data().desc),
+            id: doc.id
+          }
+
+          this.postItems.push(newObj);
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+
+    lastMsgLimit(lastMsg){
+      var limitMsg = '';
+      var msgMax = lastMsg.length;
+
+      if(lastMsg.length > 100){
+        msgMax = 100;
+      }
+
+      for(var i = 0; i < msgMax; i++){
+        limitMsg += lastMsg[i];
+      }
+
+      if(msgMax == 100){
+        limitMsg += '...';
+      }
+
+      return limitMsg;
+    }
+  },
+  created(){
+    this.getAdoptPosts()
   }
 }
 </script>

@@ -25,6 +25,11 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/PictureUpdate',
+    component: () => import('pages/PictureUpdate.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/FeedFollowing',
     component: () => import('layouts/MainLayout.vue'),
     children: [
@@ -33,10 +38,10 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/Map',
+    path: '/Explore',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Map.vue') }
+      { path: '', component: () => import('pages/Explore.vue') }
     ],
     meta: { requiresAuth: true }
   },
@@ -63,8 +68,8 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/SinglePost/:postId',
-    component: () => import('layouts/SinglePostLayout.vue'),
+    path: '/SinglePost/:postId/:userComment',
+    component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/SinglePost.vue') }
     ],
@@ -92,7 +97,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/AdoptProfile',
+    path: '/AdoptProfile/:adoptId',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/AdoptProfile.vue') }
@@ -100,8 +105,8 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/ChatRoom',
-    component: () => import('layouts/ChatRoomLayout.vue'),
+    path: '/ChatRoom/:userId',
+    component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/ChatRoom.vue') }
     ],
@@ -109,11 +114,40 @@ const routes = [
   },
   {
     path: '/PreparePost/:picId/:picStore/:picEmu/:picN/:picPic/:picName',
-    component: () => import('layouts/PostLayout.vue'),
+    component: () => import('layouts/MainLayout.vue'),
     children: [{ 
       path: '',
       component: () => import('pages/PreparePost.vue')
     }],
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/PostAdopt',
+    component: () => import('pages/PostAdopt.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/AdoptPicture/:adoptId',
+    component: () => import('pages/AdoptPicture.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/MyAdopts',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ 
+      path: '',
+      component: () => import('pages/MyAdopts.vue')
+    }],
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/EditAdopt/:adoptId',
+    component: () => import('pages/EditAdopt.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/EditAccount',
+    component: () => import('pages/EditAccount.vue'),
     meta: { requiresAuth: true }
   }
 ]

@@ -102,34 +102,73 @@
         height: 100%;
     }
 
+    &-logout{
+        color: $primary !important;
+        font-size: .9rem;
+        padding: .5rem 1rem !important;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-left:auto !important;
+        margin-right:auto !important;
+        margin-top: 100% !important;
+        width: 100px !important;
+
+        .q-item__label{            
+            text-align: center !important;
+            width: 100%;
+        }
+    }
+
     &-home{
         @extend .btn;        
-        background-size: 90%;
+        background-size: 80%;
         background-image: url('../assets/layout/home-icon.svg');
+        background-position-y: top;
+        background-position-x: center;
+        background-repeat: no-repeat;
     }
 
     &-map{
         @extend .btn;        
-        background-size: 90%;
-        background-image: url('../assets/layout/map-icon.svg');
+        background-size: 70%;
+        background-image: url('../assets/layout/search-icon.svg');
+        background-position-y: top;
+        background-position-x: center;
+        background-repeat: no-repeat;
     }
 
     &-camera{
-        @extend .btn;        
-        background-size: 100%;
-        background-image: url('../assets/layout/camera-icon.svg');
+        @extend .btn;
+        background-image: url('../assets/layout/camera-icon.svg');        
+        background-size: 80%;
+        background-position-y: top;
+        background-position-x: center;
+        background-repeat: no-repeat;
+
+        .q-item{
+
+            &__label{
+                margin-left: 2px;
+            }
+        }
     }
 
     &-adopt{
         @extend .btn;        
-        background-size: 100%;
+        background-size: 80%;
         background-image: url('../assets/layout/adopt-icon.svg');
+        background-position-y: top;
+        background-position-x: center;
+        background-repeat: no-repeat;
     }
 
     &-chat{
         @extend .btn;        
-        background-size: 100%;
+        background-size: 80%;
         background-image: url('../assets/layout/chat-icon.svg');
+        background-position-y: top;
+        background-position-x: center;
+        background-repeat: no-repeat;
     }
 
     &-my-profile{
@@ -177,7 +216,7 @@
     }
 
     &-map{
-        background-image: url('../assets/layout/map-icon-active.svg');
+        background-image: url('../assets/layout/search-icon-active.svg');
     }
 
     &-camera{

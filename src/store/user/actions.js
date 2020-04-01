@@ -35,12 +35,21 @@ export function firstUpdate({}, data){
             toy: data.toy,
             bio: data.bio,
             hometown: data.hometown,
-            avatar: ''
+            avatar: '',
+            followers: 0,
+            following: 0
         })
         .catch(function(error) {
             console.error("Error writing document: ", error);
         })
     )
+    .then(resp => {
+
+        let currentUser = firebaseAuth.currentUser.uid
+        firebaseDb.collection('follow-list').doc(currentUser).collection('i-follow').doc(currentUser).set({
+            follow: true
+        })
+    })
     .then(
         this.$router.push({
             path: '/UpdatePicture'
@@ -129,31 +138,32 @@ export function updateUser({}, data){
     }
 }
 
-export function otherUser({commit}, data){
-    firebaseDb.collection("users-info").doc(data).get()
-    .then(function(doc) {
-        if (doc.exists) {                
+// export function otherUser({commit}, data){
+//     firebaseDb.collection("users-info").doc(data).get()
+//     .then(function(doc) {
+//         if (doc.exists) {                
 
-            const userInfos = {
-                name: doc.data().name,
-                breed: doc.data().breed,
-                gender: doc.data().gender,
-                birthday: doc.data().birthday,
-                food: doc.data().food,
-                toy: doc.data().toy,
-                bio: doc.data().bio,
-                hometown: doc.data().hometown,
-                avatar: doc.data().avatar
-            }
+//             const userInfos = {
+//                 name: doc.data().name,
+//                 breed: doc.data().breed,
+//                 gender: doc.data().gender,
+//                 birthday: doc.data().birthday,
+//                 food: doc.data().food,
+//                 toy: doc.data().toy,
+//                 bio: doc.data().bio,
+//                 hometown: doc.data().hometown,
+//                 // avatar: doc.data().avatar
+//                 avatar: doc.id
+//             }
 
-            commit('setOtherUserInfo', userInfos)
+//             commit('setOtherUserInfo', userInfos)
 
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
+//         } else {
+//             // doc.data() will be undefined in this case
+//             console.log("No such document!");
+//         }
 
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });
-}
+//     }).catch(function(error) {
+//         console.log("Error getting document:", error);
+//     });
+// }

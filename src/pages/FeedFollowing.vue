@@ -2,14 +2,19 @@
   <q-page class="post-list page">
 
     <!-- Post Item -->
-    <div v-for="postItem in getPostList" v-bind:key="postItem.id" class="post-list-item">
+    <div
+    v-if="showPosts === true"
+    v-for="postItem in getPostList"
+    v-bind:key="postItem.id"
+    class="post-list-item"
+    >
 
       <!-- Post Header -->
       <header>
 
         <!-- Post Item Avatar -->
         <q-btn
-        :to="postItem[2]"
+        :to="postItem.profileUrl"
         :ripple="false"
         >
 
@@ -18,8 +23,9 @@
           >
 
             <q-img
-            :src="postItem[7]"
+            :src="postItem.avatar"
             :ratio="1"
+            placeholder-src="../assets/layout/placeholder_01.png"
             />
 
           </q-avatar>
@@ -31,11 +37,11 @@
         <div class="post-list-info">
           <q-item
           clickable
-          :to="postItem[2]"
+          :to="postItem.profileUrl"
           >
             <q-item-section>
-              <q-item-label overline>{{ postItem[1] }}</q-item-label>
-              <q-item-label caption>{{ postItem[1] }}</q-item-label>
+              <q-item-label overline>{{ postItem.userName }}</q-item-label>
+              <q-item-label caption>{{ postItem.location }}</q-item-label>
             </q-item-section>
           </q-item>
         </div>
@@ -46,43 +52,64 @@
 
       <!-- Post Item Title -->
       <div class="post-list-title">
-        <h1>{{ postItem[3] }}</h1>
+        <h1>{{ postItem.caption }}</h1>
       </div>
       <!-- /Post Item Title -->
 
       <!-- Post Item Pic -->
       <q-img
-      :src="postItem[6]"
+      :src="postItem.picture"
       ratio="1"
-      >
-        <template v-slot:loading>
-          <q-spinner-gears color="black" />
-        </template>
-      </q-img>
+      placeholder-src="../assets/layout/placeholder_01.png"
+      />
       <!-- /Post Item Pic -->
 
       <!-- Post Item Btns -->
       <div class="post-list-social">
         <q-btn
         class="btn-social"
-        @click="checkLogin()"
+        @click="thisLike === false ? genLike(postItem.postId) : ''"
         >
-          <img src="../assets/layout/paw-icon.svg">
+          <img v-if="thisLike === true" src="../assets/layout/paw-icon-active.svg">
+          <img v-if="thisLike === false" src="../assets/layout/paw-icon.svg">
         </q-btn>
-        <p class="counter">{{ postItem[5] }}</p>
+        <p class="counter">{{ postItem.like }}</p>
 
         <q-btn
         class="btn-social"
-        :to="postItem[0]"
+        :to="postItem.postUrl"
         >
           <img src="../assets/layout/comments-icon.svg">
         </q-btn>
-        <p class="counter">10</p>
+        <p class="counter">{{ postItem.comment }}</p>
+        <span>{{ postItem.date }}</span>
       </div>
       <!-- /Post Item Btns -->
 
     </div>
     <!-- /Post Item -->
+
+    <div class="no-follow" v-if="showPosts === false">
+
+      <img src="../assets/layout/not-following.svg" alt="">
+
+      <h1>Hello buddy!</h1>
+
+      <p>It seems that you don't follow anyone yet... <br>
+
+      <q-item
+      clickable
+      to="/Explore"
+      class="btn-purple"
+      >
+        <q-item-label>
+          Let's find some buddies
+        </q-item-label>
+      </q-item>
+
+      </p>
+
+    </div>
 
   </q-page>
 </template>
@@ -95,71 +122,116 @@ import 'firebase/storage'
 
 export default {
   name: 'FeedFollowing',
-  created(){
-    this.userInfoLogin(),
-    this.genPostList()
-  },
   data() {
     return {
-      getPostList: []
+      getPostList: [],
+      showPosts: true,
+      thisLike: false
     }
   },
   methods: {
-    ...mapActions('login', ['checkUser']),
     ...mapActions('user', ['userInfo']),
-    checkLogin(){
-        this.checkUser()
-    },
     userInfoLogin(){
       this.userInfo()
     },
+
     genPostList(){
-      firebaseDb.collection("posts-feed").orderBy('postTime', "desc").get()
-      .then((response) => {
-        response.docs.forEach(doc => {
-          firebaseDb.collection("users-info").doc(doc.data().postUser).get()
-          .then((newget) => {
-            var newArr = []
-            var run = false
-            var postUser = newget.data().name
-            var postUserId = '/UserProfile/' + doc.data().postUser
-            var postId = '/SinglePost/' + doc.id
-            var postCap = doc.data().postCaption
-            var postDate = doc.data().postDay
-            var postLike = doc.data().postLike
-            var postPic = doc.data().postPic
-            var userAvatar = newget.data().avatar
+      let currentUser = firebaseAuth.currentUser.uid
+      let whoFollow = []
 
-            newArr.push(postId, postUser, postUserId, postCap, postDate, postLike, postPic, userAvatar);
-
-            // var storageRef = firebase.storage().ref()
-            // var avatarImgRef = storageRef.child(`avatars/${doc.data().postUser}`)
-            // var postImgRef = storageRef.child(`posts/${doc.data().postPic}`)      
-
-            // avatarImgRef.getDownloadURL()
-            // .then(avatarUrl => {
-
-            //   newArr.push(avatarUrl)
-            //   run = true
-
-            //   if(run){
-            //     postImgRef.getDownloadURL()
-            //     .then(postUrl => {
-
-            //       newArr.push(postUrl)
-
-            //     })
-            //   }
-
-            // })
-
-            // console.log(newArr)
-
-            this.getPostList.push(newArr)
-          })
+      firebaseDb.collection('follow-list').doc(currentUser).collection('i-follow').get()
+      .then(docs => {
+        let i = 0
+        docs.forEach(doc => {
+          whoFollow[i] = doc.id
+          i++
         })
       })
+      .then(response => {
+          firebaseDb.collection('posts-feed').where('user', 'in', whoFollow).orderBy("timestamp", "asc").get()
+          .then(docs => {
+            if(docs.empty === false){
+              docs.forEach(doc => {
+                firebaseDb.collection("users-info").doc(doc.data().user).get()
+                .then(response => {
+                  
+                  let nano = doc.data().timestamp.nanoseconds.toString()
+                  let newNano = doc.data().timestamp.seconds + nano.charAt(0) + nano.charAt(1) + nano.charAt(2)
+
+                  let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+                  let date = new Date(Number(newNano))
+                  let month = months[date.getMonth()]
+                  let day = date.getDate()
+                  let formattedTime = `${day} ${month}`
+
+                  const newObj = {
+                    userName: response.data().name,
+                    profileUrl: '/UserProfile/' + doc.data().user,
+                    postUrl: '/SinglePost/' + doc.id + '/' + doc.data().user,
+                    caption: doc.data().caption,
+                    like: doc.data().like,
+                    location: doc.data().location,
+                    comment: doc.data().comment,
+                    date: formattedTime,
+                    postId: doc.id,
+                    // ! FOR REAL WORLD
+                    picture: doc.data().picture,
+                    avatar: response.data().avatar
+                    // !FOR DEV
+                    // avatar: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+                    // picture: 'https://images.pexels.com/photos/3608618/pexels-photo-3608618.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+                  }
+
+                  firebaseDb.collection('posts-feed').doc(doc.id).collection('likes').doc(currentUser).get()
+                  .then(likeGet => {
+                    
+                    if(likeGet.exists === true){
+
+                      this.thisLike = true
+
+                    } else {
+
+                      this.thisLike = false
+
+                    }
+                    
+                    this.getPostList.unshift(newObj)
+
+                  })
+                })
+              })
+
+            } else {
+              this.showPosts = false
+            }
+          })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+
+    genLike(postId){
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('posts-feed').doc(postId).update({
+        like: firebase.firestore.FieldValue.increment(1)
+      })
+      .then(response => {
+        firebaseDb.collection('posts-feed').doc(postId).collection('likes').doc(currentUser).set({
+          like: true
+        })
+        this.thisLike = true
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      // console.log(postId)
     }
+  },
+  created(){
+    this.userInfoLogin(),
+    this.genPostList()
   }
 }
 </script>

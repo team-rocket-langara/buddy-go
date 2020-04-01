@@ -7,6 +7,15 @@
 
     <h1>What do you want to change?</h1>
 
+    <q-btn
+    class="btn-big btn-round btn-yellow margin-top"
+    type="submit"
+    to="/PictureUpdate"
+    style="text-decoration: underline;"
+    >
+    Change My Profile Picture
+    </q-btn>
+
     <q-form
     class="login-form"
     @submit="updateInfo"
@@ -95,6 +104,11 @@ export default {
     },
     updateInfo(){
       this.updateUser(this.myUserInfo)
+      this.$q.notify({
+        message: "Updated!",
+        color: 'positive',
+        position: 'top'
+      })
     }
   },
   computed: {

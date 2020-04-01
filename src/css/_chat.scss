@@ -31,6 +31,10 @@
 
         .q-list{
             padding: 0 1rem;
+
+            .q-item{
+                margin-bottom: .5rem;
+            }
         }
 
         @include customItem(black, darken($lightBg, 40%), 1rem, .8rem, .04rem);

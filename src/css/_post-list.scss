@@ -42,6 +42,13 @@
             color: darken($lightBg, 50%);
             margin: 0 .5rem;
         }
+
+        span{
+            color: grey;
+            text-align: right;
+            float: right;
+            flex-grow: 1;
+        }
     }
 
     &-comments-wrapper{
