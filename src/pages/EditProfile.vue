@@ -104,6 +104,11 @@ export default {
     },
     updateInfo(){
       this.updateUser(this.myUserInfo)
+      this.$q.notify({
+        message: "Updated!",
+        color: 'positive',
+        position: 'top'
+      })
     }
   },
   computed: {

@@ -121,7 +121,7 @@
 
     &-home{
         @extend .btn;        
-        background-size: 90%;
+        background-size: 80%;
         background-image: url('../assets/layout/home-icon.svg');
         background-position-y: top;
         background-position-x: center;
@@ -130,7 +130,7 @@
 
     &-map{
         @extend .btn;        
-        background-size: 80%;
+        background-size: 70%;
         background-image: url('../assets/layout/search-icon.svg');
         background-position-y: top;
         background-position-x: center;
@@ -140,7 +140,7 @@
     &-camera{
         @extend .btn;
         background-image: url('../assets/layout/camera-icon.svg');        
-        background-size: 90%;
+        background-size: 80%;
         background-position-y: top;
         background-position-x: center;
         background-repeat: no-repeat;
@@ -155,7 +155,7 @@
 
     &-adopt{
         @extend .btn;        
-        background-size: 90%;
+        background-size: 80%;
         background-image: url('../assets/layout/adopt-icon.svg');
         background-position-y: top;
         background-position-x: center;
@@ -164,7 +164,7 @@
 
     &-chat{
         @extend .btn;        
-        background-size: 90%;
+        background-size: 80%;
         background-image: url('../assets/layout/chat-icon.svg');
         background-position-y: top;
         background-position-x: center;

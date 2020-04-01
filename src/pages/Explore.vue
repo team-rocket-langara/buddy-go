@@ -17,8 +17,8 @@
     <div class="picture-tiles-wrapper">
       <q-btn
       class="btn-picture"
-      :to="postItem.postUrl"
       v-for="postItem in postsList" v-bind:key="postItem.id"
+      :to="postItem.postUrl"
       >
         <q-img
         :src="postItem.picture"
@@ -91,7 +91,7 @@ export default {
       .then(response => {
         response.forEach(doc => {
           let newObj = {
-            postUrl: '/SinglePost/' + doc.id,
+            postUrl: '/SinglePost/' + doc.id + '/' + doc.data().user,
             picture: doc.data().picture
           }
           this.postsList.push(newObj)

@@ -115,6 +115,7 @@ export default {
   },
   created(){
     this.getAllPosts()
+    this.checkFollow()
   },
   mounted(){    
     this.getInfo()
@@ -131,6 +132,17 @@ export default {
   methods:{
     aboutMe(){
       this.$router.push({ path: '/AboutMe/' + this.$route.params.idUser })
+    },
+
+    checkFollow(){
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('follow-list').doc(currentUser).collection('i-follow').doc(this.$route.params.idUser).get()
+      .then(response => {
+        
+        if(response.exists === true){
+          this.ifollow = true
+        }
+      })
     },
 
     getInfo(){
@@ -200,7 +212,21 @@ export default {
     },
 
     stopFollow(){
-
+      let currentUser = firebaseAuth.currentUser.uid
+      firebaseDb.collection('follow-list').doc(currentUser).collection('i-follow').doc(this.$route.params.idUser).delete()
+      .then(response => {
+        firebaseDb.collection('users-info').doc(this.$route.params.idUser).update({
+          followers: firebase.firestore.FieldValue.increment(-1)
+        })
+      })
+      .then(
+        firebaseDb.collection('users-info').doc(currentUser).update({
+          following: firebase.firestore.FieldValue.increment(-1)
+        })
+      )
+      .then(        
+        this.ifollow = false
+      )
     }
   }
 }
