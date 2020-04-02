@@ -27,7 +27,7 @@
       <q-icon name="camera_enhance" />
       </q-btn>
     </div>
-    <!-- /Camera Btn -->
+    <!-- /Camera -->
     
   </q-page>
 </template>
